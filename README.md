@@ -89,7 +89,7 @@ Power BI Desktop в проекте не открывался. Чтобы мер�
 
 ## Предстоит: прогон на Windows-раннере GitHub
 
-Подготовлен ручной workflow [`ssrs-windows.yml`](.github/workflows/ssrs-windows.yml) для раннера `windows-2022`; два первых прогона 21.11.2026 остановились до сервера отчётов (у зеркала оказалась другая сборка установщика SSRS; на другом раннере диск C: сообщал сектор 8 КБ, который SQL Server не поддерживает), результатов SSRS нет. Запуск: `gh workflow run ssrs-windows.yml`, доказательства — артефакт `ssrs-windows-evidence` (30 дней). За один прогон workflow должен:
+Подготовлен ручной workflow [`ssrs-windows.yml`](.github/workflows/ssrs-windows.yml) для раннера `windows-2022`; три первых прогона 21.11.2026 результатов SSRS не дали: первые два остановились до сервера отчётов (у зеркала оказалась другая сборка установщика SSRS; на другом раннере диск C: сообщал сектор 8 КБ, который SQL Server не поддерживает), третий установил и настроил SSRS 2022, опубликовал отчёт и остановился на сохранении учётных данных источника данных. Запуск: `gh workflow run ssrs-windows.yml`, доказательства — артефакт `ssrs-windows-evidence` (30 дней). За один прогон workflow должен:
 
 - поставить SQL Server 2022 Developer (Database Engine и SQL Server Agent) и SQL Server 2022 Reporting Services в редакции Developer, настроить сервер отчётов без интерфейса через WMI ([скрипт](scripts/Initialize-ReportServer.ps1));
 - загрузить `RetailLab`, сверить итоги с эталоном и повторить [стендовые тесты](tests/test_mssql.py) на этом экземпляре;

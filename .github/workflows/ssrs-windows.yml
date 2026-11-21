@@ -96,7 +96,7 @@ jobs:
           # SQL Server supports 512-byte and 4 KB sectors; some runners report 8 KB on C: and setup then
           # fails with error 5178 on master.mdf (sources in the script). The registry fix needs a reboot.
           & .\scripts\Select-SqlDataVolume.ps1 -Folder $env:RUNNER_TEMP -EnvFile $env:GITHUB_ENV |
-            Tee-Object -FilePath "$env:EVIDENCE/sectors.txt" |
+            ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/sectors.txt" -Value $_; $_ } |
             ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value $_; $_ }
 
       - name: 2c. Install SQL Server 2022 Developer - Database Engine, SQL Server Agent, mixed authentication
@@ -244,7 +244,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           try {
             & .\scripts\Initialize-ReportServer.ps1 -Port 80 -SmtpServer 127.0.0.1 -SmtpPort 25 -OutDir "$env:EVIDENCE/config" |
-              Tee-Object -FilePath "$env:EVIDENCE/initialize.txt"
+              ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/initialize.txt" -Value $_; $_ }
           } finally {
             whoami /groups | Select-String -Pattern 'Administrators|Mandatory Label' | ForEach-Object { Write-Output "runner token: $($_.Line.Trim())" }
             Write-Output "EnableLUA: $((Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System').EnableLUA)"
@@ -293,7 +293,7 @@ jobs:
           # The 12 checks of the Linux stand against this instance: same tests, sqlcmd of the runner.
           $env:RETAIL_SQLCMD = '["sqlcmd", "-S", "localhost", "-E", "-C", "-f", "65001"]'
           $env:RETAIL_SQL_DIR = $scripts
-          python -m pytest -v -m slow tests/test_mssql.py | Tee-Object -FilePath "$env:EVIDENCE/test_mssql.txt"
+          python -m pytest -v -m slow tests/test_mssql.py | ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/test_mssql.txt" -Value $_; $_ }
           $code = $LASTEXITCODE
           $last = Get-Content "$env:EVIDENCE/test_mssql.txt" | Where-Object { $_ -match '(passed|failed|error)' } | Select-Object -Last 1
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "tests/test_mssql.py on Windows SQL Server: $last"
@@ -315,7 +315,7 @@ jobs:
           $client = "$env:COMPUTERNAME\$env:RS_CLIENT"
           try {
             & .\scripts\Publish-Report.ps1 -Url $env:RS_URL -ClientUser $client -ReaderLogin $env:READER_LOGIN -Definition rdl/SalesStock.rdl -OutDir $env:EVIDENCE |
-              Tee-Object -FilePath "$env:EVIDENCE/publish.txt"
+              ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/publish.txt" -Value $_; $_ }
           } finally {
             Get-Content "$env:EVIDENCE/publish.txt" -ErrorAction SilentlyContinue |
               Where-Object { $_ -match '^(published|data source Retail stored|TestConnectForItemDataSource|Basic authentication)' } |
@@ -331,14 +331,14 @@ jobs:
           $render = "$env:EVIDENCE/render"
           & .\scripts\Export-Report.ps1 -Url $env:RS_URL -Replay docs/runs/2026-11-19-render/replay.zip -OutDir $render
           Copy-Item docs/runs/2026-11-19-render/replay.zip $render
-          python scripts/check_render.py --render-dir $render | Tee-Object -FilePath "$env:EVIDENCE/check_render.txt"
+          python scripts/check_render.py --render-dir $render | ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/check_render.txt" -Value $_; $_ }
           $code = $LASTEXITCODE
           $last = Get-Content "$env:EVIDENCE/check_render.txt" | Select-Object -Last 1
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "server render recount (scripts/check_render.py): $last"
           if ($code -ne 0) { throw "check_render.py exited with $code" }
           # The page header of 8-18 January must name stores 02 and 06 (the local render printed ids).
           python scripts/check_server.py header --pdf "$render/partial.pdf" --regions 1 2 --stores 2 6 --categories 2 1 4 3 |
-            Tee-Object -FilePath "$env:EVIDENCE/header.txt"
+            ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/header.txt" -Value $_; $_ }
           $code = $LASTEXITCODE
           $header = (Get-Content -Encoding UTF8 "$env:EVIDENCE/header.txt" | Where-Object { $_ }) -join '; '
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "server page header: $header"
@@ -406,7 +406,7 @@ jobs:
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "subscription LastStatus: $status"
           if ($status -notmatch '^Mail sent') { throw "The subscription did not send mail: $status" }
           python scripts/check_server.py mail --maildir $mail --to $env:MAIL_TO --case north --out "$mail/attachment" |
-            Tee-Object -FilePath "$env:EVIDENCE/mail.txt"
+            ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/mail.txt" -Value $_; $_ }
           $code = $LASTEXITCODE
           Get-Content "$env:EVIDENCE/mail.txt" | Where-Object { $_ -match '^(north|mail)' } |
             ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "subscription $_" }
@@ -423,7 +423,7 @@ jobs:
           if (Test-Path "$env:EVIDENCE/mail/attachment/north.xlsx") { $env:SSRS_MAIL_XLSX = (Resolve-Path "$env:EVIDENCE/mail/attachment/north.xlsx").Path; $inputs += 'mail attachment' }
           if ($inputs.Count -eq 0) { throw 'No server answers to test.' }
           Write-Output "inputs: $($inputs -join ', ')"
-          python -m pytest -v tests/test_check_render.py tests/test_check_server.py | Tee-Object -FilePath "$env:EVIDENCE/negative.txt"
+          python -m pytest -v tests/test_check_render.py tests/test_check_server.py | ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/negative.txt" -Value $_; $_ }
           $code = $LASTEXITCODE
           $last = Get-Content "$env:EVIDENCE/negative.txt" | Where-Object { $_ -match '(passed|failed|error)' } | Select-Object -Last 1
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "negative controls on $($inputs -join ', '): $last"

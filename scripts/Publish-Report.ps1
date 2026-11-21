@@ -59,21 +59,67 @@ try {
     Write-Output "published $($item.Path) ($($item.TypeName), $($item.Size) bytes): $($lines.Count) warnings"
     $lines | ForEach-Object { Write-Output "  $_" }
 
-    $sources = $proxy.GetItemDataSources($report)
-    $retail = @($sources | Where-Object { $_.Name -eq 'Retail' })
-    if ($retail.Count -ne 1) { throw "The report has $($retail.Count) data sources named Retail." }
-    $definition = $retail[0].Item
-    Write-Output "data source Retail: $($definition.GetType().Name), extension $($definition.Extension), '$($definition.ConnectString)', credentials $($definition.CredentialRetrieval)"
-    $definition.CredentialRetrieval = 'Store'
-    $definition.UserName = $ReaderLogin
-    $definition.Password = $readerPassword
-    $definition.WindowsCredentials = $false
-    $definition.ImpersonateUser = $false
-    $definition.ImpersonateUserSpecified = $true
-    $proxy.SetItemDataSources($report, $sources)
-    $stored = @($proxy.GetItemDataSources($report) | Where-Object { $_.Name -eq 'Retail' })[0].Item
-    Write-Output "data source Retail stored: '$($stored.ConnectString)', credentials $($stored.CredentialRetrieval), user $($stored.UserName), Windows credentials $($stored.WindowsCredentials)"
-    if ("$($stored.CredentialRetrieval)" -ne 'Store') { throw 'The credentials of the data source are not stored.' }
+    # What the server returned for the data sources, seen through reflection and through the
+    # PowerShell adapter. An earlier version stored the returned definition in $definition, which
+    # in PowerShell is the same variable as the parameter [string]$Definition (variable names are
+    # case-insensitive, and a type-constrained parameter converts what is assigned to it), so the
+    # object became a String. Variables here never reuse a parameter name
+    # (tests/test_windows_workflow.py checks it).
+    $sources = @($proxy.GetItemDataSources($report))
+    foreach ($source in $sources) {
+        $item = Get-RsMember $source 'Item'
+        Write-Output "data source $(Get-RsMember $source 'Name') returned: $(Get-RsShape $source); Item by reflection: $(Get-RsShape $item)"
+        $adapted = $source.PSObject.Properties['Item']
+        if ($adapted) {
+            $value = if ($null -ne $adapted.Value) { $adapted.Value.GetType().FullName } else { 'null' }
+            Write-Output "  PowerShell adapter: Item is a $($adapted.MemberType) of $($adapted.TypeNameOfValue), value $value"
+        }
+    }
+    if (@($sources | Where-Object { (Get-RsMember $_ 'Name') -eq 'Retail' }).Count -ne 1) {
+        throw 'The report has no single data source named Retail.'
+    }
+
+    # A new definition instead of the returned one: provider and connection string from the
+    # unchanged RDL, credentials stored on the server (subscriptions run without a user).
+    # Members: https://learn.microsoft.com/dotnet/api/reportservice2010.datasourcedefinition
+    $rdl = New-Object Xml.XmlDocument
+    $rdl.Load((Resolve-Path -LiteralPath $Definition).Path)
+    $properties = $rdl.SelectSingleNode("//*[local-name()='DataSource'][@Name='Retail']/*[local-name()='ConnectionProperties']")
+    if (-not $properties) { throw "No ConnectionProperties of the data source Retail in $Definition" }
+    $provider = $properties.SelectSingleNode("*[local-name()='DataProvider']").InnerText
+    $connect = $properties.SelectSingleNode("*[local-name()='ConnectString']").InnerText
+    Write-Output "data source Retail in the RDL: provider $provider, '$connect'"
+    $sourceDefinition = New-RsObject $proxy 'DataSourceDefinition'
+    $values = [ordered]@{
+        Extension = $provider; ConnectString = $connect; CredentialRetrieval = 'Store'
+        UserName = $ReaderLogin; Password = $readerPassword; WindowsCredentials = $false
+        ImpersonateUser = $false; ImpersonateUserSpecified = $true; Enabled = $true; EnabledSpecified = $true
+    }
+    foreach ($member in $values.Keys) { Set-RsMember $sourceDefinition $member $values[$member] }
+    $source = New-RsObject $proxy 'DataSource'
+    Set-RsMember $source 'Name' 'Retail'
+    Set-RsMember $source 'Item' $sourceDefinition
+    $proxy.SetItemDataSources($report, (ConvertTo-RsArray $proxy 'DataSource' @($source)))
+
+    # Read back through reflection and, independently of the proxy, from the catalog database.
+    $returned = @($proxy.GetItemDataSources($report) | Where-Object { (Get-RsMember $_ 'Name') -eq 'Retail' })
+    $stored = Get-RsMember $returned[0] 'Item'
+    Write-Output "data source Retail read back: $(Get-RsShape $stored)"
+    $catalog = sqlcmd -S localhost -E -C -b -h -1 -W -s '|' -d ReportServer -Q "SET NOCOUNT ON; SELECT d.Name, d.Extension, d.CredentialRetrieval, CASE WHEN d.UserName IS NULL THEN 'no user' ELSE 'user stored' END, CASE WHEN d.Password IS NULL THEN 'no password' ELSE 'password stored' END FROM dbo.DataSource AS d JOIN dbo.Catalog AS c ON c.ItemID = d.ItemID WHERE c.Path = N'$report'"
+    if ($LASTEXITCODE -ne 0) { throw "the catalog query exited with $LASTEXITCODE" }
+    $catalog = @($catalog | Where-Object { $_ -match '\|' })
+    Write-Output "catalog dbo.DataSource of ${report}: $($catalog -join ' / ')"
+    if ($null -ne $stored -and $stored.GetType().Name -eq 'DataSourceDefinition') {
+        $credentials = "$(Get-RsMember $stored 'CredentialRetrieval')"
+        Write-Output "data source Retail stored: '$(Get-RsMember $stored 'ConnectString')', credentials $credentials, user $(Get-RsMember $stored 'UserName'), Windows credentials $(Get-RsMember $stored 'WindowsCredentials')"
+        if ($credentials -ne 'Store') { throw 'The credentials of the data source are not stored.' }
+    } else {
+        # The proxy gave no definition back: the catalog row decides.
+        Write-Output "data source Retail stored (catalog): $($catalog -join ' / ')"
+        if ($catalog.Count -ne 1 -or $catalog[0] -notmatch '\|user stored\|password stored$') {
+            throw 'The credentials of the data source are not stored (catalog row above).'
+        }
+    }
 
     $connectError = $null
     $connected = $proxy.TestConnectForItemDataSource($report, 'Retail', $ReaderLogin, $readerPassword, [ref]$connectError)

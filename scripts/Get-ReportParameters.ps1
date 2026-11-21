@@ -29,27 +29,32 @@ try {
     $proxy = New-RsProxy $Url
     $values = foreach ($region in $Regions) {
         $value = New-RsObject $proxy 'ParameterValue'
-        $value.Name = 'RegionIds'
-        $value.Value = "$region"
+        Set-RsMember $value 'Name' 'RegionIds'
+        Set-RsMember $value 'Value' "$region"
         $value
     }
     $parameters = $proxy.GetItemParameters($Report, $null, $true, (ConvertTo-RsArray $proxy 'ParameterValue' @($values)), $null)
 } catch {
     throw "GetItemParameters: $(Get-SoapMessage $_)"
 }
+# Members are read through reflection (scripts/RsProxy.ps1), not the PowerShell adapter.
 $dump = foreach ($parameter in $parameters) {
     [pscustomobject]@{
-        Name          = $parameter.Name
-        Type          = "$($parameter.ParameterTypeName)"
-        State         = "$($parameter.State)"
-        Dependencies  = ConvertTo-List $parameter.Dependencies { "$_" }
-        DefaultValues = ConvertTo-List $parameter.DefaultValues { "$_" }
-        ValidValues   = ConvertTo-List $parameter.ValidValues { [pscustomobject]@{ Label = $_.Label; Value = $_.Value } }
-        ErrorMessage  = $parameter.ErrorMessage
+        Name          = Get-RsMember $parameter 'Name'
+        Type          = "$(Get-RsMember $parameter 'ParameterTypeName')"
+        State         = "$(Get-RsMember $parameter 'State')"
+        Dependencies  = ConvertTo-List (Get-RsMember $parameter 'Dependencies') { "$_" }
+        DefaultValues = ConvertTo-List (Get-RsMember $parameter 'DefaultValues') { "$_" }
+        ValidValues   = ConvertTo-List (Get-RsMember $parameter 'ValidValues') {
+            [pscustomobject]@{ Label = (Get-RsMember $_ 'Label'); Value = (Get-RsMember $_ 'Value') }
+        }
+        ErrorMessage  = Get-RsMember $parameter 'ErrorMessage'
     }
 }
 $json = ConvertTo-Json -InputObject @($dump) -Depth 6
-[IO.File]::WriteAllText($OutFile, $json, (New-Object Text.UTF8Encoding($false)))
+# .NET resolves relative paths against the process directory, not the PowerShell location.
+$path = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutFile)
+[IO.File]::WriteAllText($path, $json, (New-Object Text.UTF8Encoding($false)))
 foreach ($item in $dump) {
     $shown = @($item.ValidValues | Select-Object -First 8 | ForEach-Object { "$($_.Value)=$($_.Label)" }) -join ', '
     Write-Output "regions $($Regions -join ','): $($item.Name) [$($item.State)] $(@($item.ValidValues).Count) valid values: $shown $($item.ErrorMessage)"

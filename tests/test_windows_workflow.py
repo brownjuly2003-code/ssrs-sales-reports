@@ -4,6 +4,7 @@ The workflow runs only on a GitHub-hosted Windows runner; these tests read its t
 """
 
 import re
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
@@ -195,3 +196,81 @@ def test_local_ci_does_not_pick_this_workflow(workflow):
     ci = yaml.safe_load((ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8"))
     assert "push" in ci.get("on", ci.get(True))
     assert set(workflow.get("on", workflow.get(True))).isdisjoint({"push", "pull_request"})
+
+
+def test_evidence_files_are_written_as_utf8():
+    # Tee-Object -FilePath and Out-File write UTF-16 in Windows PowerShell 5.1.
+    texts = [WORKFLOW.read_text(encoding="utf-8")] + [
+        path.read_text(encoding="utf-8") for path in (ROOT / "scripts").glob("*.ps1")
+    ]
+    for text in texts:
+        assert "Tee-Object -FilePath" not in text and "Out-File" not in text
+
+
+def test_proxy_objects_are_read_and_written_by_reflection():
+    # Proxy members are read and set by reflection, and their declared types are logged.
+    proxy = (ROOT / "scripts/RsProxy.ps1").read_text(encoding="utf-8")
+    for needed in ("function Get-RsMember", "function Set-RsMember", "function Get-RsShape"):
+        assert needed in proxy, needed
+    assert proxy.count("GetProperty($Name, [Type[]]@())") == 2
+    assert "[Enum]::Parse($target, $Value)" in proxy
+
+    publish = (ROOT / "scripts/Publish-Report.ps1").read_text(encoding="utf-8")
+    assert not re.search(r"\.Item\b", publish), "DataSource.Item through the adapter"
+    assert "Set-RsMember $source 'Item' $sourceDefinition" in publish
+    assert "New-RsObject $proxy 'DataSourceDefinition'" in publish
+    for name in (
+        "Extension = $provider",
+        "ConnectString = $connect",
+        "CredentialRetrieval = 'Store'",
+        "UserName = $ReaderLogin",
+        "Password = $readerPassword",
+        "WindowsCredentials = $false",
+        "ImpersonateUserSpecified = $true",
+    ):
+        assert name in publish, name
+    assert "local-name()='ConnectString'" in publish and "local-name()='DataProvider'" in publish
+    assert "dbo.DataSource AS d JOIN dbo.Catalog AS c" in publish
+    assert publish.index("$proxy.SetItemDataSources(") < publish.index(
+        "$proxy.TestConnectForItemDataSource("
+    )
+
+    parameters = (ROOT / "scripts/Get-ReportParameters.ps1").read_text(encoding="utf-8")
+    assert "Get-RsMember $parameter 'ValidValues'" in parameters
+    assert not re.search(r"\$parameter\.\w", parameters)
+    assert "GetUnresolvedProviderPathFromPSPath($OutFile)" in parameters
+
+
+def test_publish_takes_the_connection_from_the_unchanged_rdl():
+    rdl = ET.parse(ROOT / "rdl/SalesStock.rdl").getroot()
+    sources = [e for e in rdl.iter() if e.tag.endswith("}DataSource")]
+    assert [s.get("Name") for s in sources] == ["Retail"]
+    values = {e.tag.split("}")[1]: e.text for e in sources[0].iter()}
+    assert values["DataProvider"] == "SQL"
+    assert values["ConnectString"] == "Data Source=localhost;Initial Catalog=RetailLab"
+
+
+def assigned_parameters(text):
+    """Script parameters that the script body assigns to (names compared case-insensitively)."""
+    block = re.search(r"(?ms)^param\((.*?)^\)", text)
+    if not block:
+        return []
+    names = re.findall(r"\$(\w+)\s*(?:=|,|$)", block.group(1), flags=re.M)
+    body = text[block.end() :]
+    return [
+        name
+        for name in names
+        if re.search(rf"(?im)(^\s*\${name}\s*=[^=]|foreach\s*\(\s*\${name}\s+in\b)", body)
+    ]
+
+
+def test_scripts_do_not_assign_to_their_parameters():
+    # PowerShell variable names are case-insensitive, and a parameter declared [string] converts
+    # whatever is assigned to it: $definition = <object> next to [string]$Definition stored the
+    # object as a String on the runner. No script variable may reuse a parameter name.
+    for path in sorted((ROOT / "scripts").glob("*.ps1")):
+        assert assigned_parameters(path.read_text(encoding="utf-8")) == [], path.name
+    broken = "param(\n    [string]$Definition = 'a.rdl',\n    [string]$Name\n)\n$definition = 1\n"
+    assert assigned_parameters(broken) == ["Definition"]
+    looped = "param(\n    [string]$Name = 'x'\n)\nforeach ($name in 1, 2) { }\n"
+    assert assigned_parameters(looped) == ["Name"]
