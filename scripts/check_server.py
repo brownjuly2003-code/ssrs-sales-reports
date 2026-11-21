@@ -141,6 +141,23 @@ def check_header(pdf, data, regions, stores, categories):
     return not failures
 
 
+XLSX_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+
+def is_xlsx(part):
+    """A leaf MIME part carrying an XLSX book.
+
+    The decoded file name decides (a book named .pdf is not the XLSX the subscription
+    promises); the content type counts only for a part without any name.
+    """
+    if part.is_multipart():
+        return False
+    name = part.get_filename() or part.get_param("name", header="content-type")
+    if name:
+        return str(name).lower().endswith(".xlsx")
+    return part.get_content_type() == XLSX_TYPE
+
+
 def read_mail(maildir, to):
     """The single message to the recipient and its single XLSX attachment."""
     failures, matching = [], []
@@ -153,11 +170,9 @@ def read_mail(maildir, to):
     path, message = matching[0]
     if str(message.get("Subject", "")).strip() != SUBJECT:
         failures.append(f"subject {message.get('Subject')!r} != {SUBJECT!r}")
-    books = [
-        part
-        for part in message.iter_attachments()
-        if (part.get_filename() or "").lower().endswith(".xlsx")
-    ]
+    # The server nests the attachment in a second multipart/mixed and encodes its
+    # filename (RFC 2047), so every leaf part is inspected, not only the top-level ones.
+    books = [part for part in message.walk() if is_xlsx(part)]
     if len(books) != 1:
         failures.append(f"{len(books)} XLSX attachments, expected 1")
         return path, None, failures

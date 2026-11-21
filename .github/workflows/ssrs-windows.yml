@@ -385,24 +385,24 @@ jobs:
           if ($id -notmatch '^[0-9a-fA-F-]{36}$') { throw "Unexpected subscription id: $id" }
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "subscription created by python -m ssrs_lab.subscription: $id"
           # SSRS keeps one SQL Server Agent job per subscription schedule, named by the schedule id.
-          $job = sqlcmd -S localhost -E -C -b -h -1 -W -d ReportServer -Q "SET NOCOUNT ON; SELECT CAST(rs.ScheduleID AS nvarchar(36)) FROM dbo.ReportSchedule AS rs WHERE rs.SubscriptionID = '$id'"
+          $job = sqlcmd -S localhost -E -C -I -b -h -1 -W -d ReportServer -Q "SET NOCOUNT ON; SELECT CAST(rs.ScheduleID AS nvarchar(36)) FROM dbo.ReportSchedule AS rs WHERE rs.SubscriptionID = '$id'"
           if ($LASTEXITCODE -ne 0) { throw "the schedule query exited with $LASTEXITCODE" }
           $job = "$(@($job | Where-Object { $_.Trim() })[0])".Trim()
-          sqlcmd -S localhost -E -C -b -W -Q "SELECT j.name, j.enabled, s.name AS schedule, s.active_start_date, s.active_start_time FROM msdb.dbo.sysjobs AS j LEFT JOIN msdb.dbo.sysjobschedules AS js ON js.job_id = j.job_id LEFT JOIN msdb.dbo.sysschedules AS s ON s.schedule_id = js.schedule_id WHERE j.name = N'$job'"
-          sqlcmd -S localhost -E -C -b -Q "EXEC msdb.dbo.sp_start_job @job_name = N'$job'"
+          sqlcmd -S localhost -E -C -I -b -W -Q "SELECT j.name, j.enabled, s.name AS schedule, s.active_start_date, s.active_start_time FROM msdb.dbo.sysjobs AS j LEFT JOIN msdb.dbo.sysjobschedules AS js ON js.job_id = j.job_id LEFT JOIN msdb.dbo.sysschedules AS s ON s.schedule_id = js.schedule_id WHERE j.name = N'$job'"
+          sqlcmd -S localhost -E -C -I -b -Q "EXEC msdb.dbo.sp_start_job @job_name = N'$job'"
           if ($LASTEXITCODE -ne 0) { throw "sp_start_job $job exited with $LASTEXITCODE" }
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "SQL Server Agent job of the subscription schedule started: $job"
           $watch = [Diagnostics.Stopwatch]::StartNew()
           $status = ''
           while ($watch.Elapsed.TotalMinutes -lt 8) {
             Start-Sleep -Seconds 10
-            $status = "$(sqlcmd -S localhost -E -C -b -h -1 -W -d ReportServer -Q "SET NOCOUNT ON; SELECT LastStatus FROM dbo.Subscriptions WHERE SubscriptionID = '$id'")".Trim()
+            $status = "$(sqlcmd -S localhost -E -C -I -b -h -1 -W -d ReportServer -Q "SET NOCOUNT ON; SELECT LastStatus FROM dbo.Subscriptions WHERE SubscriptionID = '$id'")".Trim()
             Write-Output "$([math]::Round($watch.Elapsed.TotalSeconds)) s: LastStatus '$status', messages $(@(Get-ChildItem "$mail/*.eml" -ErrorAction SilentlyContinue).Count)"
             if ($status -match '^Mail sent' -and (Test-Path "$mail/*.eml")) { break }
             if ($status -match 'Failure|Error|failed') { break }
           }
-          sqlcmd -S localhost -E -C -W -Q "SELECT TOP 5 h.step_id, h.run_status, h.run_date, h.run_time, h.message FROM msdb.dbo.sysjobhistory AS h JOIN msdb.dbo.sysjobs AS j ON j.job_id = h.job_id WHERE j.name = N'$job' ORDER BY h.instance_id DESC"
-          sqlcmd -S localhost -E -C -W -d ReportServer -Q "SELECT TOP 10 ItemPath, RequestType, Format, Status, TimeStart, ByteCount, [RowCount] FROM dbo.ExecutionLog3 ORDER BY TimeStart DESC"
+          sqlcmd -S localhost -E -C -I -W -Q "SELECT TOP 5 h.step_id, h.run_status, h.run_date, h.run_time, h.message FROM msdb.dbo.sysjobhistory AS h JOIN msdb.dbo.sysjobs AS j ON j.job_id = h.job_id WHERE j.name = N'$job' ORDER BY h.instance_id DESC"
+          sqlcmd -S localhost -E -C -I -W -d ReportServer -Q "SELECT TOP 10 ItemPath, RequestType, Format, Status, TimeStart, ByteCount, [RowCount] FROM dbo.ExecutionLog3 ORDER BY TimeStart DESC"
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value "subscription LastStatus: $status"
           if ($status -notmatch '^Mail sent') { throw "The subscription did not send mail: $status" }
           python scripts/check_server.py mail --maildir $mail --to $env:MAIL_TO --case north --out "$mail/attachment" |

@@ -274,3 +274,71 @@ def test_scripts_do_not_assign_to_their_parameters():
     assert assigned_parameters(broken) == ["Definition"]
     looped = "param(\n    [string]$Name = 'x'\n)\nforeach ($name in 1, 2) { }\n"
     assert assigned_parameters(looped) == ["Name"]
+
+
+# Positions of the System.String parameters of the ReportService2010 methods the scripts call.
+STRING_ARGUMENTS = {
+    "GetItemParameters": (0, 1),  # ItemPath, HistoryID
+    "CreateFolder": (0, 1),  # Folder, Parent
+    "CreateCatalogItem": (0, 1, 2),  # ItemType, Name, Parent
+    "GetItemDataSources": (0,),
+    "SetItemDataSources": (0,),
+    "TestConnectForItemDataSource": (0, 1, 2, 3),  # ItemPath, DataSourceName, UserName, Password
+    "GetPolicies": (0,),
+    "SetPolicies": (0,),
+    "ListChildren": (0,),
+}
+
+
+def proxy_calls(text):
+    """(method, top-level arguments) of every $proxy.Method(...) call."""
+    calls = []
+    for match in re.finditer(r"\$proxy\.(\w+)\(", text):
+        depth, start, arguments = 1, match.end(), []
+        for i in range(match.end(), len(text)):
+            char = text[i]
+            if char in "([{":
+                depth += 1
+            elif char in ")]}":
+                depth -= 1
+            if depth == 0 or (depth == 1 and char == ","):
+                arguments.append(text[start:i].strip())
+                start = i + 1
+            if depth == 0:
+                break
+        calls.append((match.group(1), arguments))
+    return calls
+
+
+def test_proxy_string_arguments_are_never_a_powershell_null():
+    # PowerShell turns $null into '' for a .NET string argument: GetItemParameters then read
+    # HistoryID '' as a snapshot date (rsParameterTypeMismatch 'snapshotID') on the runner.
+    calls = []
+    for path in sorted((ROOT / "scripts").glob("*.ps1")):
+        calls += proxy_calls(path.read_text(encoding="utf-8"))
+    assert {name for name, _ in calls} <= set(STRING_ARGUMENTS), calls
+    for name, arguments in calls:
+        for position in STRING_ARGUMENTS[name]:
+            assert arguments[position].lower() != "$null", (name, arguments)
+    history = [arguments for name, arguments in calls if name == "GetItemParameters"]
+    assert history and all(arguments[1] == "[NullString]::Value" for arguments in history)
+    broken = "$proxy.GetItemParameters($Report, $null, $true, (Make $proxy 'A' @($v)), $null)"
+    assert proxy_calls(broken)[0][1][1] == "$null"
+    assert len(proxy_calls(broken)[0][1]) == 5
+
+
+def test_catalog_queries_turn_quoted_identifier_on():
+    # sqlcmd starts with QUOTED_IDENTIFIER OFF; ReportServer views and msdb indexes need it ON
+    # (Msg 1934 on dbo.ExecutionLog3 on the runner).
+    texts = [WORKFLOW.read_text(encoding="utf-8")] + [
+        path.read_text(encoding="utf-8") for path in (ROOT / "scripts").glob("*.ps1")
+    ]
+    lines = [
+        line
+        for text in texts
+        for line in text.splitlines()
+        if re.search(r"\bsqlcmd -S\b", line) and re.search(r"ReportServer|msdb", line)
+    ]
+    assert len(lines) >= 7
+    for line in lines:
+        assert re.search(r"\bsqlcmd -S \S+ -E -C -I\b", line), line

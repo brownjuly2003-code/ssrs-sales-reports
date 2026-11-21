@@ -105,7 +105,7 @@ try {
     $returned = @($proxy.GetItemDataSources($report) | Where-Object { (Get-RsMember $_ 'Name') -eq 'Retail' })
     $stored = Get-RsMember $returned[0] 'Item'
     Write-Output "data source Retail read back: $(Get-RsShape $stored)"
-    $catalog = sqlcmd -S localhost -E -C -b -h -1 -W -s '|' -d ReportServer -Q "SET NOCOUNT ON; SELECT d.Name, d.Extension, d.CredentialRetrieval, CASE WHEN d.UserName IS NULL THEN 'no user' ELSE 'user stored' END, CASE WHEN d.Password IS NULL THEN 'no password' ELSE 'password stored' END FROM dbo.DataSource AS d JOIN dbo.Catalog AS c ON c.ItemID = d.ItemID WHERE c.Path = N'$report'"
+    $catalog = sqlcmd -S localhost -E -C -I -b -h -1 -W -s '|' -d ReportServer -Q "SET NOCOUNT ON; SELECT d.Name, d.Extension, d.CredentialRetrieval, CASE WHEN d.UserName IS NULL THEN 'no user' ELSE 'user stored' END, CASE WHEN d.Password IS NULL THEN 'no password' ELSE 'password stored' END FROM dbo.DataSource AS d JOIN dbo.Catalog AS c ON c.ItemID = d.ItemID WHERE c.Path = N'$report'"
     if ($LASTEXITCODE -ne 0) { throw "the catalog query exited with $LASTEXITCODE" }
     $catalog = @($catalog | Where-Object { $_ -match '\|' })
     Write-Output "catalog dbo.DataSource of ${report}: $($catalog -join ' / ')"

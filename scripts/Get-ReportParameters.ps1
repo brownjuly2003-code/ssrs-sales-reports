@@ -33,7 +33,11 @@ try {
         Set-RsMember $value 'Value' "$region"
         $value
     }
-    $parameters = $proxy.GetItemParameters($Report, $null, $true, (ConvertTo-RsArray $proxy 'ParameterValue' @($values)), $null)
+    # HistoryID is a .NET string: PowerShell turns $null into '' for string arguments, and
+    # the server then parses '' as a snapshot date (rsParameterTypeMismatch 'snapshotID').
+    # [NullString]::Value passes a real null, i.e. the live report, not a snapshot.
+    $values = ConvertTo-RsArray $proxy 'ParameterValue' @($values)
+    $parameters = $proxy.GetItemParameters($Report, [NullString]::Value, $true, $values, $null)
 } catch {
     throw "GetItemParameters: $(Get-SoapMessage $_)"
 }

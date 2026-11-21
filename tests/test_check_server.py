@@ -7,6 +7,8 @@ attachment of the subscription e-mail) replace the fabricated inputs, so a chang
 answer must fail there too.
 """
 
+import email
+import email.policy
 import importlib.util
 import json
 import os
@@ -173,6 +175,47 @@ def test_mail_attachment_is_recounted(tmp_path):
     write_mail(tmp_path / "mail", MAIL_XLSX)
     assert check_server.check_mail(tmp_path / "mail", TO, "north", tmp_path / "out")
     assert (tmp_path / "out" / "north.xlsx").read_bytes() == MAIL_XLSX.read_bytes()
+
+
+SERVER_MAIL = ROOT / "tests" / "data" / "ssrs-subscription-001.eml"
+
+
+def test_server_mail_attachment_is_found_and_recounted(tmp_path):
+    """The message of the SQL Server Agent job of the first server run that sent mail.
+
+    SSRS nests the XLSX in a second multipart/mixed and writes its filename as an
+    RFC 2047 encoded word; the book must still be found and recounted as 'north'.
+    """
+    raw = SERVER_MAIL.read_bytes()
+    message = email.message_from_bytes(raw, policy=email.policy.default)
+    assert not any(part.get_filename() for part in message.iter_attachments())
+    assert b'filename="=?utf-8?B?' in raw
+    (tmp_path / "mail").mkdir()
+    (tmp_path / "mail" / "001.eml").write_bytes(raw)
+    assert check_server.check_mail(tmp_path / "mail", TO, "north", tmp_path / "out")
+    book = openpyxl.load_workbook(tmp_path / "out" / "north.xlsx").active
+    assert any(book.cell(i, 1).value == "Всего" for i in range(1, book.max_row + 1))
+
+
+def test_server_mail_with_a_changed_sum_fails(tmp_path):
+    message = email.message_from_bytes(SERVER_MAIL.read_bytes(), policy=email.policy.default)
+    part = next(p for p in message.walk() if check_server.is_xlsx(p))
+    (tmp_path / "server.xlsx").write_bytes(part.get_payload(decode=True))
+    book = openpyxl.load_workbook(tmp_path / "server.xlsx")
+    sheet = book.active
+    total = next(i for i in range(1, sheet.max_row + 1) if sheet.cell(i, 1).value == "Всего")
+    sheet.cell(total, 3).value += 1
+    book.save(tmp_path / "changed.xlsx")
+    part.set_content(
+        (tmp_path / "changed.xlsx").read_bytes(),
+        maintype="application",
+        subtype="vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        disposition="attachment",
+        filename="SalesStock.xlsx",
+    )
+    (tmp_path / "mail").mkdir()
+    (tmp_path / "mail" / "001.eml").write_bytes(bytes(message))
+    assert not check_server.check_mail(tmp_path / "mail", TO, "north", tmp_path / "out")
 
 
 def test_changed_attachment_fails(tmp_path):
