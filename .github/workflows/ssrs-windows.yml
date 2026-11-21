@@ -90,7 +90,16 @@ jobs:
           Write-Output $line
           if ($hash -ne $env:SQL_ISO_SHA256) { throw "SHA-256 differs from the pinned $env:SQL_ISO_SHA256" }
 
-      - name: 2b. Install SQL Server 2022 Developer - Database Engine, SQL Server Agent, mixed authentication
+      - name: 2b. Sector size of the disks; a virtual disk for the database files if C reports more than 4 KB (scripts/Select-SqlDataVolume.ps1)
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # SQL Server supports 512-byte and 4 KB sectors; some runners report 8 KB on C: and setup then
+          # fails with error 5178 on master.mdf (sources in the script). The registry fix needs a reboot.
+          & .\scripts\Select-SqlDataVolume.ps1 -Folder $env:RUNNER_TEMP -EnvFile $env:GITHUB_ENV |
+            Tee-Object -FilePath "$env:EVIDENCE/sectors.txt" |
+            ForEach-Object { Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value $_; $_ }
+
+      - name: 2c. Install SQL Server 2022 Developer - Database Engine, SQL Server Agent, mixed authentication
         timeout-minutes: 50
         run: |
           $ErrorActionPreference = 'Stop'
@@ -119,7 +128,11 @@ jobs:
             '/AGTSVCACCOUNT="NT Service\SQLSERVERAGENT"', '/AGTSVCSTARTUPTYPE=Automatic',
             '/SECURITYMODE=SQL', "/SAPWD=`"$env:SA_PASSWORD`"",
             '/TCPENABLED=1', '/SkipRules=RebootRequiredCheck'
-          ) -join ' '
+          )
+          # System databases, tempdb, user databases and backups default to folders under
+          # INSTALLSQLDATADIR (parameter reference above), so one parameter moves them all; step 2d checks it.
+          if ($env:SQL_DATA_ROOT) { $arguments += "/INSTALLSQLDATADIR=`"$env:SQL_DATA_ROOT`"" }
+          $arguments = $arguments -join ' '
           Write-Output "setup arguments: $($arguments.Replace($env:SA_PASSWORD, '***'))"
           $watch = [Diagnostics.Stopwatch]::StartNew()
           $process = Start-Process -FilePath $setup -ArgumentList $arguments -Wait -PassThru -NoNewWindow
@@ -130,7 +143,8 @@ jobs:
             Write-Output '--- Summary.txt (head) ---'
             Get-Content -LiteralPath $summaryFile -TotalCount 40
           }
-          $line = "SQL Server setup: exit code $code in $minutes min (features SQLENGINE, Agent automatic, SECURITYMODE=SQL)"
+          $where = if ($env:SQL_DATA_ROOT) { "data in $env:SQL_DATA_ROOT" } else { 'default data folder' }
+          $line = "SQL Server setup: exit code $code in $minutes min (features SQLENGINE, Agent automatic, SECURITYMODE=SQL, $where)"
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value $line
           Write-Output $line
           if ($code -ne 0 -and $code -ne 3010) {
@@ -142,7 +156,7 @@ jobs:
           }
           Dismount-DiskImage -ImagePath $iso | Out-Null
 
-      - name: 2c. Wait for SQL Server and SQL Server Agent; sqlcmd; version and edition
+      - name: 2d. Wait for SQL Server and SQL Server Agent; sqlcmd; version and edition; where the database files are
         run: |
           $ErrorActionPreference = 'Stop'
           foreach ($name in 'MSSQLSERVER', 'SQLSERVERAGENT') {
@@ -171,6 +185,19 @@ jobs:
           $line = "Database Engine: $(($engine | Where-Object { $_ }) -join ' '); SQL Server Agent running"
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value $line
           Write-Output $line
+          # Where the instance keeps its files: system databases and the defaults for new databases.
+          $files = sqlcmd -S localhost -E -C -b -h -1 -W -s '|' -Q "SET NOCOUNT ON; SELECT 'default data', CAST(SERVERPROPERTY('InstanceDefaultDataPath') AS nvarchar(260)) UNION ALL SELECT 'default log', CAST(SERVERPROPERTY('InstanceDefaultLogPath') AS nvarchar(260)) UNION ALL SELECT DB_NAME(database_id) + ' ' + name, physical_name FROM sys.master_files"
+          if ($LASTEXITCODE -ne 0) { throw "the sys.master_files query exited with $LASTEXITCODE" }
+          $files = @($files | Where-Object { $_ -match '\|' })
+          Set-Content -Encoding UTF8 -Path "$env:EVIDENCE/master_files.txt" -Value $files
+          $files
+          $paths = @($files | ForEach-Object { ($_ -split '\|', 2)[1] })
+          $root = if ($env:SQL_DATA_ROOT) { $env:SQL_DATA_ROOT } else { 'C:\' }
+          $outside = @($paths | Where-Object { -not $_.StartsWith($root, [StringComparison]::OrdinalIgnoreCase) })
+          $line = "database files: $($paths.Count - 2) files of system databases and both default paths under $root, outside: $($outside.Count)"
+          Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value $line
+          Write-Output $line
+          if ($files.Count -lt 3 -or $outside.Count -gt 0) { throw "Database files or default paths outside ${root}: $($outside -join ', ')" }
 
       - name: 3a. Download the Reporting Services installer; SHA-256 and signature
         run: |
@@ -412,9 +439,11 @@ jobs:
           }
           Get-ChildItem (Join-Path $env:RUNNER_TEMP 'ssrs-install.log'), "$env:TEMP\SSRS*.log" -ErrorAction SilentlyContinue |
             Copy-Item -Destination "$env:EVIDENCE/logs/"
-          $root = 'C:\Program Files\Microsoft SQL Server'
-          Get-ChildItem "$root\MSSQL16.*\MSSQL\Log\ERRORLOG", "$root\MSSQL16.*\MSSQL\Log\SQLAGENT.OUT" -ErrorAction SilentlyContinue |
-            Copy-Item -Destination "$env:EVIDENCE/logs/"
+          # The instance logs live under the data root: the default one or SQL_DATA_ROOT (step 2b).
+          foreach ($root in @('C:\Program Files\Microsoft SQL Server', $env:SQL_DATA_ROOT) | Where-Object { $_ }) {
+            Get-ChildItem "$root\MSSQL16.*\MSSQL\Log\ERRORLOG", "$root\MSSQL16.*\MSSQL\Log\SQLAGENT.OUT" -ErrorAction SilentlyContinue |
+              Copy-Item -Destination "$env:EVIDENCE/logs/"
+          }
           if (Test-Path -LiteralPath $env:RS_LOG) {
             Copy-Item -Recurse -Force -LiteralPath $env:RS_LOG -Destination "$env:EVIDENCE/logs/ssrs-logfiles"
             Get-ChildItem $env:RS_LOG -Filter '*.log' | Sort-Object LastWriteTime | Select-Object -Last 2 |
@@ -428,7 +457,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $file = "$env:EVIDENCE/summary.txt"
           $lines = @(Get-Content -Encoding UTF8 $file -ErrorAction SilentlyContinue)
-          foreach ($key in 'reference:', 'SQL Server media:', 'SQL Server setup:', 'Database Engine:', 'SSRS media:', 'SSRS setup:',
+          foreach ($key in 'reference:', 'SQL Server media:', 'sectors C:', 'SQL Server data:', 'SQL Server setup:', 'Database Engine:', 'database files:', 'SSRS media:', 'SSRS setup:',
                            'Reporting Services version', 'Reporting Services edition', 'Reporting Services initialized', 'RetailLab:',
                            'tests/test_mssql.py on Windows', 'published', 'TestConnectForItemDataSource', 'Basic authentication',
                            'server render recount', 'server page header', 'server cascade', 'subscription created',

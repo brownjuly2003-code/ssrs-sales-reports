@@ -76,6 +76,7 @@ def test_steps_call_the_project_scripts(job):
     for needed in (
         "python -m ssrs_lab generate",
         "python -m ssrs_lab reference",
+        "scripts/Select-SqlDataVolume.ps1",
         "scripts/Initialize-ReportServer.ps1",
         "sql/01-schema.sql",
         "sql/02-load.sql",
@@ -101,6 +102,7 @@ def test_steps_call_the_project_scripts(job):
         if path.startswith(("scripts/", "sql/", "tests/", "rdl/", "subscription/")):
             assert (ROOT / path).is_file(), needed
     order = (
+        "scripts/Select-SqlDataVolume.ps1",
         "scripts/Initialize-ReportServer.ps1",
         "sql/01-schema.sql",
         "scripts/Publish-Report.ps1",
@@ -130,6 +132,37 @@ def test_setup_installs_engine_agent_and_reporting_services(job):
     assert "-notin @($env:SSRS_SHA256, $env:SSRS_SHA256_ALT)" in text
     assert "-notlike 'CN=Microsoft Corporation,*'" in text
     assert "Latin1_General_100_CI_AS_SC_UTF8" in text
+
+
+def test_database_files_avoid_disks_with_large_sectors(job):
+    # Some runners report 8 KB sectors on C:, which SQL Server cannot use (error 5178).
+    names = [step.get("name", "") for step in job["steps"]]
+    texts = [step.get("run", "").replace("\\", "/") for step in job["steps"]]
+    choose = next(i for i, text in enumerate(texts) if "scripts/Select-SqlDataVolume.ps1" in text)
+    setup = next(i for i, text in enumerate(texts) if "/ACTION=Install" in text)
+    files = next(i for i, text in enumerate(texts) if "sys.master_files" in text)
+    assert choose < setup < files, names
+    assert "-EnvFile $env:GITHUB_ENV" in texts[choose]
+    assert 'if ($env:SQL_DATA_ROOT) { $arguments += "/INSTALLSQLDATADIR=' in texts[setup]
+    assert "InstanceDefaultDataPath" in texts[files] and "InstanceDefaultLogPath" in texts[files]
+    assert "master_files.txt" in texts[files] and "throw" in texts[files]
+    logs = next(step["run"] for step in job["steps"] if step.get("if") == "failure()")
+    assert "$env:SQL_DATA_ROOT" in logs
+
+    script = (ROOT / "scripts/Select-SqlDataVolume.ps1").read_text(encoding="utf-8")
+    assert "fsutil fsinfo sectorinfo" in script
+    assert "PhysicalBytesPerSectorForAtomicity" in script
+    assert "$Supported = 4096" in script
+    assert "Get-SectorSize 'C:'" in script and "Test-Path -LiteralPath 'D:/'" in script.replace(
+        "\\", "/"
+    )
+    assert "foreach ($extension in 'vhdx', 'vhd')" in script
+    for command in ("create vdisk", "attach vdisk", "format fs=ntfs quick", "assign letter"):
+        assert command in script, command
+    # The new volume is measured, not trusted, and the job stops if no format fits.
+    assert 'Sector = (Get-SectorSize "${letter}:")' in script
+    assert "SQL Server cannot keep its files on this runner" in script
+    assert "SQL_DATA_ROOT=$root" in script
 
 
 def test_server_steps_run_after_a_successful_publish(job):
