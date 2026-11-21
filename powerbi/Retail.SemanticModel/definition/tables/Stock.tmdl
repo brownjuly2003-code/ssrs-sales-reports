@@ -1,0 +1,56 @@
+/// Снимок на конец дня
+table Stock
+	lineageTag: 496ee9b6-b7d8-5bf7-9f47-e78dffe516c3
+
+	/// Остаток на последний выбранный день
+	measure 'Closing Stock' = CALCULATE(SUM(Stock[OnHand]), LASTDATE('Calendar'[Day]))
+		formatString: #,0
+		lineageTag: 1adaa2c0-5bf5-518a-923a-39f470a99001
+
+	column Day
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 25ea12c8-e519-557e-b4ee-7a38ab6318a4
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreId
+		dataType: int64
+		formatString: 0
+		lineageTag: fdc56726-2c82-5d65-a9bf-6d0af8f094db
+		summarizeBy: none
+		sourceColumn: StoreId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductId
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a7a17c0-3654-57d1-91d2-4d58105366c0
+		summarizeBy: none
+		sourceColumn: ProductId
+
+		annotation SummarizationSetBy = Automatic
+
+	column OnHand
+		dataType: int64
+		formatString: 0
+		lineageTag: a47c1a40-e8a7-5bbb-8aea-114580b14651
+		summarizeBy: none
+		sourceColumn: OnHand
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Stock = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "Stock.csv"), [Delimiter = ",", Columns = 4, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"Day", type date}, {"StoreId", Int64.Type}, {"ProductId", Int64.Type}, {"OnHand", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

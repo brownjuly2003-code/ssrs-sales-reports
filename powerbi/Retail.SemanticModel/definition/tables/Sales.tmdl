@@ -1,0 +1,75 @@
+/// Продажи по дням
+table Sales
+	lineageTag: fcd013ad-4e5d-5a54-82d7-0373a32aeee0
+
+	/// Выручка в рублях
+	measure Revenue = IF(NOT ISBLANK([Closing Stock]) || NOT ISBLANK(SUM(Sales[RevenueCents])), DIVIDE(SUM(Sales[RevenueCents]) + 0, 100))
+		formatString: #,0.00
+		lineageTag: e6f5b30e-f9b8-5879-b148-ea31c3dab867
+
+	/// Количество за период
+	measure 'Units Sold' = IF(NOT ISBLANK([Closing Stock]) || NOT ISBLANK(SUM(Sales[Units])), SUM(Sales[Units]) + 0)
+		formatString: #,0
+		lineageTag: 6e2d27f3-02d0-524e-aa13-e697ab419ce4
+
+	/// Средневзвешенная цена в рублях
+	measure 'Average Price' = DIVIDE([Revenue], [Units Sold])
+		formatString: #,0.00
+		lineageTag: 8b72597c-a2b1-5004-b633-6f8c4d57666b
+
+	column Day
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 9bd66197-95a8-5995-ae00-6c1e4f47178c
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreId
+		dataType: int64
+		formatString: 0
+		lineageTag: b3159687-e024-592d-b0e1-c11754d0c322
+		summarizeBy: none
+		sourceColumn: StoreId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductId
+		dataType: int64
+		formatString: 0
+		lineageTag: f321ceaa-a9e1-506d-bb36-fe67289a04d8
+		summarizeBy: none
+		sourceColumn: ProductId
+
+		annotation SummarizationSetBy = Automatic
+
+	column Units
+		dataType: int64
+		formatString: 0
+		lineageTag: 88d155f1-64ac-5fff-a1fa-ad7875e4534b
+		summarizeBy: none
+		sourceColumn: Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column RevenueCents
+		dataType: int64
+		formatString: 0
+		lineageTag: f0a646dc-5305-5f01-839b-b8d7cc2ebb2c
+		summarizeBy: none
+		sourceColumn: RevenueCents
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "Sales.csv"), [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"Day", type date}, {"StoreId", Int64.Type}, {"ProductId", Int64.Type}, {"Units", Int64.Type}, {"RevenueCents", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

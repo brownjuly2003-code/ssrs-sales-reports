@@ -1,0 +1,23 @@
+relationship b933bacf-f595-5983-921b-a6a0589137b9
+	fromColumn: Stock.StoreId
+	toColumn: Store.StoreId
+
+relationship fb1f48c6-1db7-5bd2-93fb-e87753f6daa9
+	fromColumn: Stock.ProductId
+	toColumn: Product.ProductId
+
+relationship 4bc6b0a2-a046-531c-92ca-6e6641201ee1
+	fromColumn: Stock.Day
+	toColumn: Calendar.Day
+
+relationship 5a7f9bb3-7537-56db-95e8-c3e331d4702a
+	fromColumn: Sales.StoreId
+	toColumn: Store.StoreId
+
+relationship cd60748e-39da-5137-8ec9-36d9d6757cd3
+	fromColumn: Sales.ProductId
+	toColumn: Product.ProductId
+
+relationship 4cbcfc98-37c1-5929-8b1b-abac3d9e63da
+	fromColumn: Sales.Day
+	toColumn: Calendar.Day

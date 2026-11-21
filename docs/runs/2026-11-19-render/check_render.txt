@@ -1,0 +1,18 @@
+# Second audit, 2026-11-19, commit 334fd59, Windows, Python 3.13.7, openpyxl 3.1.5, pypdf 6.16.1
+# Run 1: python scripts/check_render.py (committed files only: all.pdf present, four PDFs removed)
+all: total [55523, 384014558, 8727] groups=42/42 products=512/512 prices=555 stock<8 filled=73/73 stock==8 white=20/20 pdf pages=1 size=595x842pt rows=3 -> ok
+north: total [27724, 191776330, 4365] groups=21/21 products=256/256 prices=278 stock<8 filled=37/37 stock==8 white=8/8 pdf content not checked (not in repository, SHA-256 in the render record) -> ok
+two_categories: total [27678, 190406002, 4309] groups=26/26 products=256/256 prices=283 stock<8 filled=37/37 stock==8 white=8/8 pdf content not checked (not in repository, SHA-256 in the render record) -> ok
+partial: total [5019, 34654082, 2364] groups=12/12 products=128/128 prices=141 stock<8 filled=19/19 stock==8 white=6/6 pdf content not checked (not in repository, SHA-256 in the render record) -> ok
+first_day: total [1731, 11955707, 12022] groups=42/42 products=512/512 prices=555 stock<8 filled=34/34 stock==8 white=10/10 pdf content not checked (not in repository, SHA-256 in the render record) -> ok
+5/5 cases passed: PASS
+# exit code 0
+# Run 2: python scripts/check_render.py --render-dir <temporary copy of docs/runs/2026-11-19-render>
+# with north, two_categories, partial and first_day PDFs restored from commit e853c03; SHA-256 of all five equal the render record
+all: total [55523, 384014558, 8727] groups=42/42 products=512/512 prices=555 stock<8 filled=73/73 stock==8 white=20/20 pdf pages=1 size=595x842pt rows=3 -> ok
+north: total [27724, 191776330, 4365] groups=21/21 products=256/256 prices=278 stock<8 filled=37/37 stock==8 white=8/8 pdf pages=1 size=595x842pt rows=2 -> ok
+two_categories: total [27678, 190406002, 4309] groups=26/26 products=256/256 prices=283 stock<8 filled=37/37 stock==8 white=8/8 pdf pages=1 size=595x842pt rows=3 -> ok
+partial: total [5019, 34654082, 2364] groups=12/12 products=128/128 prices=141 stock<8 filled=19/19 stock==8 white=6/6 pdf pages=1 size=595x842pt rows=3 -> ok
+first_day: total [1731, 11955707, 12022] groups=42/42 products=512/512 prices=555 stock<8 filled=34/34 stock==8 white=10/10 pdf pages=1 size=595x842pt rows=3 -> ok
+5/5 cases passed: PASS
+# exit code 0

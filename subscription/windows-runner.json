@@ -1,0 +1,13 @@
+{
+  "report": "/Retail/SalesStock",
+  "to": "reports@example.invalid",
+  "format": "EXCELOPENXML",
+  "start_time": "2030-02-01T08:30:00",
+  "parameters": {
+    "StartDate": ["2026-01-01"],
+    "EndDate": ["2026-01-31"],
+    "RegionIds": ["1"],
+    "StoreIds": ["1", "2", "3", "4"],
+    "CategoryIds": ["2", "1", "4", "3"]
+  }
+}

@@ -1,0 +1,49 @@
+/// Магазины с регионом
+table Store
+	lineageTag: 34f80223-f91e-54d1-b7b1-ba4c38c7ad08
+
+	column StoreId
+		dataType: int64
+		formatString: 0
+		lineageTag: ef4f1f12-d919-5524-b0de-6b5871dda903
+		summarizeBy: none
+		sourceColumn: StoreId
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionId
+		dataType: int64
+		formatString: 0
+		lineageTag: d11bc1b8-f993-5271-8646-600e3f2d92ac
+		summarizeBy: none
+		sourceColumn: RegionId
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreName
+		dataType: string
+		lineageTag: 20bda15a-0f6e-5888-91be-2453d3f7fd78
+		summarizeBy: none
+		sourceColumn: StoreName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: 28be4955-29c3-5f39-b94f-3cc59197eeff
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Store = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "DimStore.csv"), [Delimiter = ",", Columns = 4, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"StoreId", Int64.Type}, {"RegionId", Int64.Type}, {"StoreName", type text}, {"RegionName", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

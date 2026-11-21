@@ -1,0 +1,24 @@
+/// Даты отчётного периода
+table Calendar
+	lineageTag: 9d280cc8-ffed-566c-9fcd-090ed242659a
+
+	column Day
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 14c20d44-0f63-5a0e-affb-ff39ca77b89f
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "Calendar.csv"), [Delimiter = ",", Columns = 1, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"Day", type date}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

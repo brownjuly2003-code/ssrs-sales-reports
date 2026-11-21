@@ -1,0 +1,49 @@
+/// Товары с категорией
+table Product
+	lineageTag: 0d34bb55-7be1-526c-ac39-4f709cca8f4c
+
+	column ProductId
+		dataType: int64
+		formatString: 0
+		lineageTag: bd8b9783-87e9-52fa-a387-dd5fbe6e710f
+		summarizeBy: none
+		sourceColumn: ProductId
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryId
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ff5dbe0-10bb-5300-ba9a-91a1ea45b7b7
+		summarizeBy: none
+		sourceColumn: CategoryId
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 7e3fbcb5-e40c-5bfc-aa3c-6d6a9f335a5a
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		lineageTag: 418588e0-6f72-5852-813c-652c4f4009b2
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "DimProduct.csv"), [Delimiter = ",", Columns = 4, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"ProductId", Int64.Type}, {"CategoryId", Int64.Type}, {"ProductName", type text}, {"CategoryName", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,54 @@
+name: Retail reports
+on:
+  push:
+    paths-ignore: ['**.md']
+  pull_request:
+    paths-ignore: ['**.md']
+concurrency:
+  group: retail-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - run: ruff format --check . && ruff check .
+      - run: python -m pytest -q -m 'not slow'
+      - run: python -m ssrs_lab generate && python -m ssrs_lab reference
+      - run: python -m ssrs_lab check-rdl && python -m ssrs_lab check-pbip
+      - run: python scripts/audit.py --verify-archive docs/runs/offline-evidence.zip
+      - run: python scripts/check_render.py
+  mssql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m ssrs_lab generate
+      - name: Start SQL Server
+        id: ready
+        run: |
+          set -eu
+          umask 077
+          echo "MSSQL_SA_PASSWORD=Aa1!$(openssl rand -hex 24)" > .env
+          docker compose down -v --remove-orphans
+          docker compose up -d --wait --wait-timeout 240
+      - name: Compare the procedures with the CSV reference
+        if: steps.ready.outcome == 'success'
+        run: python -m pytest -q -m slow tests/test_mssql.py
+      - name: Remove the stand
+        if: always()
+        run: if test -f .env; then docker compose down -v --remove-orphans; fi

@@ -1,0 +1,601 @@
+measure,context,expected,actual,result
+Average Price,all,69.16315004592691,69.16315004592691,PASS
+Average Price,all / R1,69.17339849949502,69.17339849949502,PASS
+Average Price,all / R1 / S1,69.32214255106413,69.32214255106413,PASS
+Average Price,all / R1 / S1 / C1,68.79160287081339,68.79160287081339,PASS
+Average Price,all / R1 / S1 / C2,69.15782805429863,69.15782805429863,PASS
+Average Price,all / R1 / S1 / C3,69.2634375,69.2634375,PASS
+Average Price,all / R1 / S1 / C4,70.0472809496891,70.0472809496891,PASS
+Average Price,all / R1 / S2,69.55430021754896,69.55430021754896,PASS
+Average Price,all / R1 / S2 / C1,68.76571173317451,68.76571173317451,PASS
+Average Price,all / R1 / S2 / C2,68.4936756126021,68.4936756126021,PASS
+Average Price,all / R1 / S2 / C3,70.21545874206578,70.21545874206578,PASS
+Average Price,all / R1 / S2 / C4,70.68271339739967,70.68271339739967,PASS
+Average Price,all / R1 / S3,68.85714140975539,68.85714140975539,PASS
+Average Price,all / R1 / S3 / C1,67.37260328239955,67.37260328239955,PASS
+Average Price,all / R1 / S3 / C2,68.8528,68.8528,PASS
+Average Price,all / R1 / S3 / C3,69.52154195011337,69.52154195011337,PASS
+Average Price,all / R1 / S3 / C4,69.7531941031941,69.7531941031941,PASS
+Average Price,all / R1 / S4,68.9591111432288,68.9591111432288,PASS
+Average Price,all / R1 / S4 / C1,67.64682726204465,67.64682726204465,PASS
+Average Price,all / R1 / S4 / C2,68.59215730337078,68.59215730337078,PASS
+Average Price,all / R1 / S4 / C3,69.22687242798354,69.22687242798354,PASS
+Average Price,all / R1 / S4 / C4,70.35958525345623,70.35958525345623,PASS
+Average Price,all / R2,69.15292924205907,69.15292924205907,PASS
+Average Price,all / R2 / S5,69.23080944836526,69.23080944836526,PASS
+Average Price,all / R2 / S5 / C1,68.13533947065592,68.13533947065592,PASS
+Average Price,all / R2 / S5 / C2,68.85451481696688,68.85451481696688,PASS
+Average Price,all / R2 / S5 / C3,69.80338609383833,69.80338609383833,PASS
+Average Price,all / R2 / S5 / C4,70.12797667638483,70.12797667638483,PASS
+Average Price,all / R2 / S6,69.15019329164298,69.15019329164298,PASS
+Average Price,all / R2 / S6 / C1,68.27298060941828,68.27298060941828,PASS
+Average Price,all / R2 / S6 / C2,69.81355594610427,69.81355594610427,PASS
+Average Price,all / R2 / S6 / C3,69.29098209127672,69.29098209127672,PASS
+Average Price,all / R2 / S6 / C4,69.26581148912437,69.26581148912437,PASS
+Average Price,all / R2 / S7,69.0885470332851,69.0885470332851,PASS
+Average Price,all / R2 / S7 / C1,68.03922642574817,68.03922642574817,PASS
+Average Price,all / R2 / S7 / C2,69.22452077562326,69.22452077562326,PASS
+Average Price,all / R2 / S7 / C3,69.20654578979718,69.20654578979718,PASS
+Average Price,all / R2 / S7 / C4,69.92096074985355,69.92096074985355,PASS
+Average Price,all / R2 / S8,69.14184515195369,69.14184515195369,PASS
+Average Price,all / R2 / S8 / C1,68.02940571428572,68.02940571428572,PASS
+Average Price,all / R2 / S8 / C2,68.82397929844738,68.82397929844738,PASS
+Average Price,all / R2 / S8 / C3,69.16001788908765,69.16001788908765,PASS
+Average Price,all / R2 / S8 / C4,70.55759174311926,70.55759174311926,PASS
+Average Price,first_day,69.06820912767186,69.06820912767186,PASS
+Average Price,first_day / R1,69.36109411764706,69.36109411764706,PASS
+Average Price,first_day / R1 / S1,70.49046082949309,70.49046082949309,PASS
+Average Price,first_day / R1 / S1 / C1,68.82244444444444,68.82244444444444,PASS
+Average Price,first_day / R1 / S1 / C2,72.20551724137931,72.20551724137931,PASS
+Average Price,first_day / R1 / S1 / C3,70.27444444444444,70.27444444444444,PASS
+Average Price,first_day / R1 / S1 / C4,70.278,70.278,PASS
+Average Price,first_day / R1 / S2,69.99264367816092,69.99264367816092,PASS
+Average Price,first_day / R1 / S2 / C1,68.75636363636364,68.75636363636364,PASS
+Average Price,first_day / R1 / S2 / C2,63.602439024390236,63.602439024390236,PASS
+Average Price,first_day / R1 / S2 / C3,74.07962962962964,74.07962962962964,PASS
+Average Price,first_day / R1 / S2 / C4,72.72685714285714,72.72685714285714,PASS
+Average Price,first_day / R1 / S3,68.15485106382978,68.15485106382978,PASS
+Average Price,first_day / R1 / S3 / C1,70.83426229508197,70.83426229508197,PASS
+Average Price,first_day / R1 / S3 / C2,66.85744680851064,66.85744680851064,PASS
+Average Price,first_day / R1 / S3 / C3,67.84625,67.84625,PASS
+Average Price,first_day / R1 / S3 / C4,66.84190476190476,66.84190476190476,PASS
+Average Price,first_day / R1 / S4,69.04191964285714,69.04191964285714,PASS
+Average Price,first_day / R1 / S4 / C1,67.26084745762712,67.26084745762712,PASS
+Average Price,first_day / R1 / S4 / C2,69.55090909090909,69.55090909090909,PASS
+Average Price,first_day / R1 / S4 / C3,69.22375,69.22375,PASS
+Average Price,first_day / R1 / S4 / C4,70.0220895522388,70.0220895522388,PASS
+Average Price,first_day / R2,68.78562996594779,68.78562996594779,PASS
+Average Price,first_day / R2 / S5,68.50569444444444,68.50569444444444,PASS
+Average Price,first_day / R2 / S5 / C1,64.37622222222222,64.37622222222222,PASS
+Average Price,first_day / R2 / S5 / C2,69.9376,69.9376,PASS
+Average Price,first_day / R2 / S5 / C3,69.26172413793103,69.26172413793103,PASS
+Average Price,first_day / R2 / S5 / C4,69.62285714285714,69.62285714285714,PASS
+Average Price,first_day / R2 / S6,70.15129464285714,70.15129464285714,PASS
+Average Price,first_day / R2 / S6 / C1,70.94945945945946,70.94945945945946,PASS
+Average Price,first_day / R2 / S6 / C2,67.85492957746479,67.85492957746479,PASS
+Average Price,first_day / R2 / S6 / C3,71.31444444444445,71.31444444444445,PASS
+Average Price,first_day / R2 / S6 / C4,71.29161290322581,71.29161290322581,PASS
+Average Price,first_day / R2 / S7,67.91248780487804,67.91248780487804,PASS
+Average Price,first_day / R2 / S7 / C1,69.34833333333333,69.34833333333333,PASS
+Average Price,first_day / R2 / S7 / C2,67.96692307692308,67.96692307692308,PASS
+Average Price,first_day / R2 / S7 / C3,66.5125806451613,66.5125806451613,PASS
+Average Price,first_day / R2 / S7 / C4,68.26232558139536,68.26232558139536,PASS
+Average Price,first_day / R2 / S8,68.50406779661017,68.50406779661017,PASS
+Average Price,first_day / R2 / S8 / C1,70.83125,70.83125,PASS
+Average Price,first_day / R2 / S8 / C2,69.09533333333334,69.09533333333334,PASS
+Average Price,first_day / R2 / S8 / C3,65.42,65.42,PASS
+Average Price,first_day / R2 / S8 / C4,67.78764705882354,67.78764705882354,PASS
+Average Price,first_day / S1 / P1,46.33,46.33,PASS
+Average Price,first_day / S1 / P2,,,PASS
+Average Price,north,69.17339849949502,69.17339849949502,PASS
+Average Price,north / R1,69.17339849949502,69.17339849949502,PASS
+Average Price,north / R1 / S1,69.32214255106413,69.32214255106413,PASS
+Average Price,north / R1 / S1 / C1,68.79160287081339,68.79160287081339,PASS
+Average Price,north / R1 / S1 / C2,69.15782805429863,69.15782805429863,PASS
+Average Price,north / R1 / S1 / C3,69.2634375,69.2634375,PASS
+Average Price,north / R1 / S1 / C4,70.0472809496891,70.0472809496891,PASS
+Average Price,north / R1 / S2,69.55430021754896,69.55430021754896,PASS
+Average Price,north / R1 / S2 / C1,68.76571173317451,68.76571173317451,PASS
+Average Price,north / R1 / S2 / C2,68.4936756126021,68.4936756126021,PASS
+Average Price,north / R1 / S2 / C3,70.21545874206578,70.21545874206578,PASS
+Average Price,north / R1 / S2 / C4,70.68271339739967,70.68271339739967,PASS
+Average Price,north / R1 / S3,68.85714140975539,68.85714140975539,PASS
+Average Price,north / R1 / S3 / C1,67.37260328239955,67.37260328239955,PASS
+Average Price,north / R1 / S3 / C2,68.8528,68.8528,PASS
+Average Price,north / R1 / S3 / C3,69.52154195011337,69.52154195011337,PASS
+Average Price,north / R1 / S3 / C4,69.7531941031941,69.7531941031941,PASS
+Average Price,north / R1 / S4,68.9591111432288,68.9591111432288,PASS
+Average Price,north / R1 / S4 / C1,67.64682726204465,67.64682726204465,PASS
+Average Price,north / R1 / S4 / C2,68.59215730337078,68.59215730337078,PASS
+Average Price,north / R1 / S4 / C3,69.22687242798354,69.22687242798354,PASS
+Average Price,north / R1 / S4 / C4,70.35958525345623,70.35958525345623,PASS
+Average Price,partial,69.04578999800758,69.04578999800758,PASS
+Average Price,partial / R1,69.31089156626506,69.31089156626506,PASS
+Average Price,partial / R1 / S2,69.31089156626506,69.31089156626506,PASS
+Average Price,partial / R1 / S2 / C1,68.09502546689303,68.09502546689303,PASS
+Average Price,partial / R1 / S2 / C2,67.69462783171521,67.69462783171521,PASS
+Average Price,partial / R1 / S2 / C3,70.43921095008052,70.43921095008052,PASS
+Average Price,partial / R1 / S2 / C4,70.84308157099699,70.84308157099699,PASS
+Average Price,partial / R2,68.78477659153816,68.78477659153816,PASS
+Average Price,partial / R2 / S6,68.78477659153816,68.78477659153816,PASS
+Average Price,partial / R2 / S6 / C1,67.63048484848485,67.63048484848485,PASS
+Average Price,partial / R2 / S6 / C2,69.48533762057878,69.48533762057878,PASS
+Average Price,partial / R2 / S6 / C3,69.79388349514564,69.79388349514564,PASS
+Average Price,partial / R2 / S6 / C4,68.31173290937997,68.31173290937997,PASS
+Average Price,two_categories,68.79326613194596,68.79326613194596,PASS
+Average Price,two_categories / R1,68.8525604634323,68.8525604634323,PASS
+Average Price,two_categories / R1 / S1,69.03569284064666,69.03569284064666,PASS
+Average Price,two_categories / R1 / S1 / C1,68.79160287081339,68.79160287081339,PASS
+Average Price,two_categories / R1 / S1 / C3,69.2634375,69.2634375,PASS
+Average Price,two_categories / R1 / S2,69.50205744431418,69.50205744431418,PASS
+Average Price,two_categories / R1 / S2 / C1,68.76571173317451,68.76571173317451,PASS
+Average Price,two_categories / R1 / S2 / C3,70.21545874206578,70.21545874206578,PASS
+Average Price,two_categories / R1 / S3,68.44615972812235,68.44615972812235,PASS
+Average Price,two_categories / R1 / S3 / C1,67.37260328239955,67.37260328239955,PASS
+Average Price,two_categories / R1 / S3 / C3,69.52154195011337,69.52154195011337,PASS
+Average Price,two_categories / R1 / S4,68.4366176902733,68.4366176902733,PASS
+Average Price,two_categories / R1 / S4 / C1,67.64682726204465,67.64682726204465,PASS
+Average Price,two_categories / R1 / S4 / C3,69.22687242798354,69.22687242798354,PASS
+Average Price,two_categories / R2,68.73421978655898,68.73421978655898,PASS
+Average Price,two_categories / R2 / S5,68.97673510122613,68.97673510122613,PASS
+Average Price,two_categories / R2 / S5 / C1,68.13533947065592,68.13533947065592,PASS
+Average Price,two_categories / R2 / S5 / C3,69.80338609383833,69.80338609383833,PASS
+Average Price,two_categories / R2 / S6,68.77132918552037,68.77132918552037,PASS
+Average Price,two_categories / R2 / S6 / C1,68.27298060941828,68.27298060941828,PASS
+Average Price,two_categories / R2 / S6 / C3,69.29098209127672,69.29098209127672,PASS
+Average Price,two_categories / R2 / S7,68.59815185403178,68.59815185403178,PASS
+Average Price,two_categories / R2 / S7 / C1,68.03922642574817,68.03922642574817,PASS
+Average Price,two_categories / R2 / S7 / C3,69.20654578979718,69.20654578979718,PASS
+Average Price,two_categories / R2 / S8,68.58266997373796,68.58266997373796,PASS
+Average Price,two_categories / R2 / S8 / C1,68.02940571428572,68.02940571428572,PASS
+Average Price,two_categories / R2 / S8 / C3,69.16001788908765,69.16001788908765,PASS
+Closing Stock,all,8727.0,8727.0,PASS
+Closing Stock,all / R1,4365.0,4365.0,PASS
+Closing Stock,all / R1 / S1,1141.0,1141.0,PASS
+Closing Stock,all / R1 / S1 / C1,271.0,271.0,PASS
+Closing Stock,all / R1 / S1 / C2,315.0,315.0,PASS
+Closing Stock,all / R1 / S1 / C3,307.0,307.0,PASS
+Closing Stock,all / R1 / S1 / C4,248.0,248.0,PASS
+Closing Stock,all / R1 / S2,1016.0,1016.0,PASS
+Closing Stock,all / R1 / S2 / C1,269.0,269.0,PASS
+Closing Stock,all / R1 / S2 / C2,280.0,280.0,PASS
+Closing Stock,all / R1 / S2 / C3,235.0,235.0,PASS
+Closing Stock,all / R1 / S2 / C4,232.0,232.0,PASS
+Closing Stock,all / R1 / S3,1164.0,1164.0,PASS
+Closing Stock,all / R1 / S3 / C1,271.0,271.0,PASS
+Closing Stock,all / R1 / S3 / C2,239.0,239.0,PASS
+Closing Stock,all / R1 / S3 / C3,328.0,328.0,PASS
+Closing Stock,all / R1 / S3 / C4,326.0,326.0,PASS
+Closing Stock,all / R1 / S4,1044.0,1044.0,PASS
+Closing Stock,all / R1 / S4 / C1,306.0,306.0,PASS
+Closing Stock,all / R1 / S4 / C2,243.0,243.0,PASS
+Closing Stock,all / R1 / S4 / C3,258.0,258.0,PASS
+Closing Stock,all / R1 / S4 / C4,237.0,237.0,PASS
+Closing Stock,all / R2,4362.0,4362.0,PASS
+Closing Stock,all / R2 / S5,1044.0,1044.0,PASS
+Closing Stock,all / R2 / S5 / C1,242.0,242.0,PASS
+Closing Stock,all / R2 / S5 / C2,234.0,234.0,PASS
+Closing Stock,all / R2 / S5 / C3,272.0,272.0,PASS
+Closing Stock,all / R2 / S5 / C4,296.0,296.0,PASS
+Closing Stock,all / R2 / S6,1075.0,1075.0,PASS
+Closing Stock,all / R2 / S6 / C1,255.0,255.0,PASS
+Closing Stock,all / R2 / S6 / C2,287.0,287.0,PASS
+Closing Stock,all / R2 / S6 / C3,216.0,216.0,PASS
+Closing Stock,all / R2 / S6 / C4,317.0,317.0,PASS
+Closing Stock,all / R2 / S7,1165.0,1165.0,PASS
+Closing Stock,all / R2 / S7 / C1,274.0,274.0,PASS
+Closing Stock,all / R2 / S7 / C2,260.0,260.0,PASS
+Closing Stock,all / R2 / S7 / C3,317.0,317.0,PASS
+Closing Stock,all / R2 / S7 / C4,314.0,314.0,PASS
+Closing Stock,all / R2 / S8,1078.0,1078.0,PASS
+Closing Stock,all / R2 / S8 / C1,202.0,202.0,PASS
+Closing Stock,all / R2 / S8 / C2,243.0,243.0,PASS
+Closing Stock,all / R2 / S8 / C3,286.0,286.0,PASS
+Closing Stock,all / R2 / S8 / C4,347.0,347.0,PASS
+Closing Stock,first_day,12022.0,12022.0,PASS
+Closing Stock,first_day / R1,5987.0,5987.0,PASS
+Closing Stock,first_day / R1 / S1,1547.0,1547.0,PASS
+Closing Stock,first_day / R1 / S1 / C1,379.0,379.0,PASS
+Closing Stock,first_day / R1 / S1 / C2,306.0,306.0,PASS
+Closing Stock,first_day / R1 / S1 / C3,416.0,416.0,PASS
+Closing Stock,first_day / R1 / S1 / C4,446.0,446.0,PASS
+Closing Stock,first_day / R1 / S2,1533.0,1533.0,PASS
+Closing Stock,first_day / R1 / S2 / C1,484.0,484.0,PASS
+Closing Stock,first_day / R1 / S2 / C2,254.0,254.0,PASS
+Closing Stock,first_day / R1 / S2 / C3,396.0,396.0,PASS
+Closing Stock,first_day / R1 / S2 / C4,399.0,399.0,PASS
+Closing Stock,first_day / R1 / S3,1462.0,1462.0,PASS
+Closing Stock,first_day / R1 / S3 / C1,379.0,379.0,PASS
+Closing Stock,first_day / R1 / S3 / C2,332.0,332.0,PASS
+Closing Stock,first_day / R1 / S3 / C3,358.0,358.0,PASS
+Closing Stock,first_day / R1 / S3 / C4,393.0,393.0,PASS
+Closing Stock,first_day / R1 / S4,1445.0,1445.0,PASS
+Closing Stock,first_day / R1 / S4 / C1,394.0,394.0,PASS
+Closing Stock,first_day / R1 / S4 / C2,314.0,314.0,PASS
+Closing Stock,first_day / R1 / S4 / C3,310.0,310.0,PASS
+Closing Stock,first_day / R1 / S4 / C4,427.0,427.0,PASS
+Closing Stock,first_day / R2,6035.0,6035.0,PASS
+Closing Stock,first_day / R2 / S5,1553.0,1553.0,PASS
+Closing Stock,first_day / R2 / S5 / C1,385.0,385.0,PASS
+Closing Stock,first_day / R2 / S5 / C2,379.0,379.0,PASS
+Closing Stock,first_day / R2 / S5 / C3,367.0,367.0,PASS
+Closing Stock,first_day / R2 / S5 / C4,422.0,422.0,PASS
+Closing Stock,first_day / R2 / S6,1566.0,1566.0,PASS
+Closing Stock,first_day / R2 / S6 / C1,419.0,419.0,PASS
+Closing Stock,first_day / R2 / S6 / C2,374.0,374.0,PASS
+Closing Stock,first_day / R2 / S6 / C3,358.0,358.0,PASS
+Closing Stock,first_day / R2 / S6 / C4,415.0,415.0,PASS
+Closing Stock,first_day / R2 / S7,1505.0,1505.0,PASS
+Closing Stock,first_day / R2 / S7 / C1,365.0,365.0,PASS
+Closing Stock,first_day / R2 / S7 / C2,450.0,450.0,PASS
+Closing Stock,first_day / R2 / S7 / C3,335.0,335.0,PASS
+Closing Stock,first_day / R2 / S7 / C4,355.0,355.0,PASS
+Closing Stock,first_day / R2 / S8,1411.0,1411.0,PASS
+Closing Stock,first_day / R2 / S8 / C1,366.0,366.0,PASS
+Closing Stock,first_day / R2 / S8 / C2,306.0,306.0,PASS
+Closing Stock,first_day / R2 / S8 / C3,362.0,362.0,PASS
+Closing Stock,first_day / R2 / S8 / C4,377.0,377.0,PASS
+Closing Stock,first_day / S1 / P1,10.0,10.0,PASS
+Closing Stock,first_day / S1 / P2,17.0,17.0,PASS
+Closing Stock,north,4365.0,4365.0,PASS
+Closing Stock,north / R1,4365.0,4365.0,PASS
+Closing Stock,north / R1 / S1,1141.0,1141.0,PASS
+Closing Stock,north / R1 / S1 / C1,271.0,271.0,PASS
+Closing Stock,north / R1 / S1 / C2,315.0,315.0,PASS
+Closing Stock,north / R1 / S1 / C3,307.0,307.0,PASS
+Closing Stock,north / R1 / S1 / C4,248.0,248.0,PASS
+Closing Stock,north / R1 / S2,1016.0,1016.0,PASS
+Closing Stock,north / R1 / S2 / C1,269.0,269.0,PASS
+Closing Stock,north / R1 / S2 / C2,280.0,280.0,PASS
+Closing Stock,north / R1 / S2 / C3,235.0,235.0,PASS
+Closing Stock,north / R1 / S2 / C4,232.0,232.0,PASS
+Closing Stock,north / R1 / S3,1164.0,1164.0,PASS
+Closing Stock,north / R1 / S3 / C1,271.0,271.0,PASS
+Closing Stock,north / R1 / S3 / C2,239.0,239.0,PASS
+Closing Stock,north / R1 / S3 / C3,328.0,328.0,PASS
+Closing Stock,north / R1 / S3 / C4,326.0,326.0,PASS
+Closing Stock,north / R1 / S4,1044.0,1044.0,PASS
+Closing Stock,north / R1 / S4 / C1,306.0,306.0,PASS
+Closing Stock,north / R1 / S4 / C2,243.0,243.0,PASS
+Closing Stock,north / R1 / S4 / C3,258.0,258.0,PASS
+Closing Stock,north / R1 / S4 / C4,237.0,237.0,PASS
+Closing Stock,partial,2364.0,2364.0,PASS
+Closing Stock,partial / R1,1270.0,1270.0,PASS
+Closing Stock,partial / R1 / S2,1270.0,1270.0,PASS
+Closing Stock,partial / R1 / S2 / C1,330.0,330.0,PASS
+Closing Stock,partial / R1 / S2 / C2,325.0,325.0,PASS
+Closing Stock,partial / R1 / S2 / C3,340.0,340.0,PASS
+Closing Stock,partial / R1 / S2 / C4,275.0,275.0,PASS
+Closing Stock,partial / R2,1094.0,1094.0,PASS
+Closing Stock,partial / R2 / S6,1094.0,1094.0,PASS
+Closing Stock,partial / R2 / S6 / C1,289.0,289.0,PASS
+Closing Stock,partial / R2 / S6 / C2,295.0,295.0,PASS
+Closing Stock,partial / R2 / S6 / C3,274.0,274.0,PASS
+Closing Stock,partial / R2 / S6 / C4,236.0,236.0,PASS
+Closing Stock,two_categories,4309.0,4309.0,PASS
+Closing Stock,two_categories / R1,2245.0,2245.0,PASS
+Closing Stock,two_categories / R1 / S1,578.0,578.0,PASS
+Closing Stock,two_categories / R1 / S1 / C1,271.0,271.0,PASS
+Closing Stock,two_categories / R1 / S1 / C3,307.0,307.0,PASS
+Closing Stock,two_categories / R1 / S2,504.0,504.0,PASS
+Closing Stock,two_categories / R1 / S2 / C1,269.0,269.0,PASS
+Closing Stock,two_categories / R1 / S2 / C3,235.0,235.0,PASS
+Closing Stock,two_categories / R1 / S3,599.0,599.0,PASS
+Closing Stock,two_categories / R1 / S3 / C1,271.0,271.0,PASS
+Closing Stock,two_categories / R1 / S3 / C3,328.0,328.0,PASS
+Closing Stock,two_categories / R1 / S4,564.0,564.0,PASS
+Closing Stock,two_categories / R1 / S4 / C1,306.0,306.0,PASS
+Closing Stock,two_categories / R1 / S4 / C3,258.0,258.0,PASS
+Closing Stock,two_categories / R2,2064.0,2064.0,PASS
+Closing Stock,two_categories / R2 / S5,514.0,514.0,PASS
+Closing Stock,two_categories / R2 / S5 / C1,242.0,242.0,PASS
+Closing Stock,two_categories / R2 / S5 / C3,272.0,272.0,PASS
+Closing Stock,two_categories / R2 / S6,471.0,471.0,PASS
+Closing Stock,two_categories / R2 / S6 / C1,255.0,255.0,PASS
+Closing Stock,two_categories / R2 / S6 / C3,216.0,216.0,PASS
+Closing Stock,two_categories / R2 / S7,591.0,591.0,PASS
+Closing Stock,two_categories / R2 / S7 / C1,274.0,274.0,PASS
+Closing Stock,two_categories / R2 / S7 / C3,317.0,317.0,PASS
+Closing Stock,two_categories / R2 / S8,488.0,488.0,PASS
+Closing Stock,two_categories / R2 / S8 / C1,202.0,202.0,PASS
+Closing Stock,two_categories / R2 / S8 / C3,286.0,286.0,PASS
+Revenue,all,3840145.58,3840145.58,PASS
+Revenue,all / R1,1917763.3,1917763.3,PASS
+Revenue,all / R1 / S1,485324.32,485324.32,PASS
+Revenue,all / R1 / S1 / C1,115019.56,115019.56,PASS
+Revenue,all / R1 / S1 / C2,122271.04,122271.04,PASS
+Revenue,all / R1 / S1 / C3,124120.08,124120.08,PASS
+Revenue,all / R1 / S1 / C4,123913.64,123913.64,PASS
+Revenue,all / R1 / S2,479576.9,479576.9,PASS
+Revenue,all / R1 / S2 / C1,115457.63,115457.63,PASS
+Revenue,all / R1 / S2 / C2,117398.16,117398.16,PASS
+Revenue,all / R1 / S2 / C3,121683.39,121683.39,PASS
+Revenue,all / R1 / S2 / C4,125037.72,125037.72,PASS
+Revenue,all / R1 / S3,475733.99,475733.99,PASS
+Revenue,all / R1 / S3 / C1,119047.39,119047.39,PASS
+Revenue,all / R1 / S3 / C2,120492.4,120492.4,PASS
+Revenue,all / R1 / S3 / C3,122636.0,122636.0,PASS
+Revenue,all / R1 / S3 / C4,113558.2,113558.2,PASS
+Revenue,all / R1 / S4,477128.09,477128.09,PASS
+Revenue,all / R1 / S4 / C1,115134.9,115134.9,PASS
+Revenue,all / R1 / S4 / C2,122094.04,122094.04,PASS
+Revenue,all / R1 / S4 / C3,117754.91,117754.91,PASS
+Revenue,all / R1 / S4 / C4,122144.24,122144.24,PASS
+Revenue,all / R2,1922382.28,1922382.28,PASS
+Revenue,all / R2 / S5,480669.51,480669.51,PASS
+Revenue,all / R2 / S5 / C1,118419.22,118419.22,PASS
+Revenue,all / R2 / S5 / C2,118498.62,118498.62,PASS
+Revenue,all / R2 / S5 / C3,123482.19,123482.19,PASS
+Revenue,all / R2 / S5 / C4,120269.48,120269.48,PASS
+Revenue,all / R2 / S6,486540.76,486540.76,PASS
+Revenue,all / R2 / S6 / C1,123232.73,123232.73,PASS
+Revenue,all / R2 / S6 / C2,119171.74,119171.74,PASS
+Revenue,all / R2 / S6 / C3,119942.69,119942.69,PASS
+Revenue,all / R2 / S6 / C4,124193.6,124193.6,PASS
+Revenue,all / R2 / S7,477401.86,477401.86,PASS
+Revenue,all / R2 / S7 / C1,120497.47,120497.47,PASS
+Revenue,all / R2 / S7 / C2,124950.26,124950.26,PASS
+Revenue,all / R2 / S7 / C3,112599.05,112599.05,PASS
+Revenue,all / R2 / S7 / C4,119355.08,119355.08,PASS
+Revenue,all / R2 / S8,477770.15,477770.15,PASS
+Revenue,all / R2 / S8 / C1,119051.46,119051.46,PASS
+Revenue,all / R2 / S8 / C2,119684.9,119684.9,PASS
+Revenue,all / R2 / S8 / C3,115981.35,115981.35,PASS
+Revenue,all / R2 / S8 / C4,123052.44,123052.44,PASS
+Revenue,first_day,119557.07,119557.07,PASS
+Revenue,first_day / R1,58956.93,58956.93,PASS
+Revenue,first_day / R1 / S1,15296.43,15296.43,PASS
+Revenue,first_day / R1 / S1 / C1,3097.01,3097.01,PASS
+Revenue,first_day / R1 / S1 / C2,4187.92,4187.92,PASS
+Revenue,first_day / R1 / S1 / C3,3794.82,3794.82,PASS
+Revenue,first_day / R1 / S1 / C4,4216.68,4216.68,PASS
+Revenue,first_day / R1 / S2,12178.72,12178.72,PASS
+Revenue,first_day / R1 / S2 / C1,3025.28,3025.28,PASS
+Revenue,first_day / R1 / S2 / C2,2607.7,2607.7,PASS
+Revenue,first_day / R1 / S2 / C3,4000.3,4000.3,PASS
+Revenue,first_day / R1 / S2 / C4,2545.44,2545.44,PASS
+Revenue,first_day / R1 / S3,16016.39,16016.39,PASS
+Revenue,first_day / R1 / S3 / C1,4320.89,4320.89,PASS
+Revenue,first_day / R1 / S3 / C2,3142.3,3142.3,PASS
+Revenue,first_day / R1 / S3 / C3,4342.16,4342.16,PASS
+Revenue,first_day / R1 / S3 / C4,4211.04,4211.04,PASS
+Revenue,first_day / R1 / S4,15465.39,15465.39,PASS
+Revenue,first_day / R1 / S4 / C1,3968.39,3968.39,PASS
+Revenue,first_day / R1 / S4 / C2,4590.36,4590.36,PASS
+Revenue,first_day / R1 / S4 / C3,2215.16,2215.16,PASS
+Revenue,first_day / R1 / S4 / C4,4691.48,4691.48,PASS
+Revenue,first_day / R2,60600.14,60600.14,PASS
+Revenue,first_day / R2 / S5,14797.23,14797.23,PASS
+Revenue,first_day / R2 / S5 / C1,2896.93,2896.93,PASS
+Revenue,first_day / R2 / S5 / C2,3496.88,3496.88,PASS
+Revenue,first_day / R2 / S5 / C3,4017.18,4017.18,PASS
+Revenue,first_day / R2 / S5 / C4,4386.24,4386.24,PASS
+Revenue,first_day / R2 / S6,15713.89,15713.89,PASS
+Revenue,first_day / R2 / S6 / C1,2625.13,2625.13,PASS
+Revenue,first_day / R2 / S6 / C2,4817.7,4817.7,PASS
+Revenue,first_day / R2 / S6 / C3,3850.98,3850.98,PASS
+Revenue,first_day / R2 / S6 / C4,4420.08,4420.08,PASS
+Revenue,first_day / R2 / S7,13922.06,13922.06,PASS
+Revenue,first_day / R2 / S7 / C1,3328.72,3328.72,PASS
+Revenue,first_day / R2 / S7 / C2,3534.28,3534.28,PASS
+Revenue,first_day / R2 / S7 / C3,4123.78,4123.78,PASS
+Revenue,first_day / R2 / S7 / C4,2935.28,2935.28,PASS
+Revenue,first_day / R2 / S8,16166.96,16166.96,PASS
+Revenue,first_day / R2 / S8 / C1,4533.2,4533.2,PASS
+Revenue,first_day / R2 / S8 / C2,4145.72,4145.72,PASS
+Revenue,first_day / R2 / S8 / C3,2878.48,2878.48,PASS
+Revenue,first_day / R2 / S8 / C4,4609.56,4609.56,PASS
+Revenue,first_day / S1 / P1,185.32,185.32,PASS
+Revenue,first_day / S1 / P2,0.0,0.0,PASS
+Revenue,north,1917763.3,1917763.3,PASS
+Revenue,north / R1,1917763.3,1917763.3,PASS
+Revenue,north / R1 / S1,485324.32,485324.32,PASS
+Revenue,north / R1 / S1 / C1,115019.56,115019.56,PASS
+Revenue,north / R1 / S1 / C2,122271.04,122271.04,PASS
+Revenue,north / R1 / S1 / C3,124120.08,124120.08,PASS
+Revenue,north / R1 / S1 / C4,123913.64,123913.64,PASS
+Revenue,north / R1 / S2,479576.9,479576.9,PASS
+Revenue,north / R1 / S2 / C1,115457.63,115457.63,PASS
+Revenue,north / R1 / S2 / C2,117398.16,117398.16,PASS
+Revenue,north / R1 / S2 / C3,121683.39,121683.39,PASS
+Revenue,north / R1 / S2 / C4,125037.72,125037.72,PASS
+Revenue,north / R1 / S3,475733.99,475733.99,PASS
+Revenue,north / R1 / S3 / C1,119047.39,119047.39,PASS
+Revenue,north / R1 / S3 / C2,120492.4,120492.4,PASS
+Revenue,north / R1 / S3 / C3,122636.0,122636.0,PASS
+Revenue,north / R1 / S3 / C4,113558.2,113558.2,PASS
+Revenue,north / R1 / S4,477128.09,477128.09,PASS
+Revenue,north / R1 / S4 / C1,115134.9,115134.9,PASS
+Revenue,north / R1 / S4 / C2,122094.04,122094.04,PASS
+Revenue,north / R1 / S4 / C3,117754.91,117754.91,PASS
+Revenue,north / R1 / S4 / C4,122144.24,122144.24,PASS
+Revenue,partial,346540.82,346540.82,PASS
+Revenue,partial / R1,172584.12,172584.12,PASS
+Revenue,partial / R1 / S2,172584.12,172584.12,PASS
+Revenue,partial / R1 / S2 / C1,40107.97,40107.97,PASS
+Revenue,partial / R1 / S2 / C2,41835.28,41835.28,PASS
+Revenue,partial / R1 / S2 / C3,43742.75,43742.75,PASS
+Revenue,partial / R1 / S2 / C4,46898.12,46898.12,PASS
+Revenue,partial / R2,173956.7,173956.7,PASS
+Revenue,partial / R2 / S6,173956.7,173956.7,PASS
+Revenue,partial / R2 / S6 / C1,44636.12,44636.12,PASS
+Revenue,partial / R2 / S6 / C2,43219.88,43219.88,PASS
+Revenue,partial / R2 / S6 / C3,43132.62,43132.62,PASS
+Revenue,partial / R2 / S6 / C4,42968.08,42968.08,PASS
+Revenue,two_categories,1904060.02,1904060.02,PASS
+Revenue,two_categories / R1,950853.86,950853.86,PASS
+Revenue,two_categories / R1 / S1,239139.64,239139.64,PASS
+Revenue,two_categories / R1 / S1 / C1,115019.56,115019.56,PASS
+Revenue,two_categories / R1 / S1 / C3,124120.08,124120.08,PASS
+Revenue,two_categories / R1 / S2,237141.02,237141.02,PASS
+Revenue,two_categories / R1 / S2 / C1,115457.63,115457.63,PASS
+Revenue,two_categories / R1 / S2 / C3,121683.39,121683.39,PASS
+Revenue,two_categories / R1 / S3,241683.39,241683.39,PASS
+Revenue,two_categories / R1 / S3 / C1,119047.39,119047.39,PASS
+Revenue,two_categories / R1 / S3 / C3,122636.0,122636.0,PASS
+Revenue,two_categories / R1 / S4,232889.81,232889.81,PASS
+Revenue,two_categories / R1 / S4 / C1,115134.9,115134.9,PASS
+Revenue,two_categories / R1 / S4 / C3,117754.91,117754.91,PASS
+Revenue,two_categories / R2,953206.16,953206.16,PASS
+Revenue,two_categories / R2 / S5,241901.41,241901.41,PASS
+Revenue,two_categories / R2 / S5 / C1,118419.22,118419.22,PASS
+Revenue,two_categories / R2 / S5 / C3,123482.19,123482.19,PASS
+Revenue,two_categories / R2 / S6,243175.42,243175.42,PASS
+Revenue,two_categories / R2 / S6 / C1,123232.73,123232.73,PASS
+Revenue,two_categories / R2 / S6 / C3,119942.69,119942.69,PASS
+Revenue,two_categories / R2 / S7,233096.52,233096.52,PASS
+Revenue,two_categories / R2 / S7 / C1,120497.47,120497.47,PASS
+Revenue,two_categories / R2 / S7 / C3,112599.05,112599.05,PASS
+Revenue,two_categories / R2 / S8,235032.81,235032.81,PASS
+Revenue,two_categories / R2 / S8 / C1,119051.46,119051.46,PASS
+Revenue,two_categories / R2 / S8 / C3,115981.35,115981.35,PASS
+Units Sold,all,55523.0,55523.0,PASS
+Units Sold,all / R1,27724.0,27724.0,PASS
+Units Sold,all / R1 / S1,7001.0,7001.0,PASS
+Units Sold,all / R1 / S1 / C1,1672.0,1672.0,PASS
+Units Sold,all / R1 / S1 / C2,1768.0,1768.0,PASS
+Units Sold,all / R1 / S1 / C3,1792.0,1792.0,PASS
+Units Sold,all / R1 / S1 / C4,1769.0,1769.0,PASS
+Units Sold,all / R1 / S2,6895.0,6895.0,PASS
+Units Sold,all / R1 / S2 / C1,1679.0,1679.0,PASS
+Units Sold,all / R1 / S2 / C2,1714.0,1714.0,PASS
+Units Sold,all / R1 / S2 / C3,1733.0,1733.0,PASS
+Units Sold,all / R1 / S2 / C4,1769.0,1769.0,PASS
+Units Sold,all / R1 / S3,6909.0,6909.0,PASS
+Units Sold,all / R1 / S3 / C1,1767.0,1767.0,PASS
+Units Sold,all / R1 / S3 / C2,1750.0,1750.0,PASS
+Units Sold,all / R1 / S3 / C3,1764.0,1764.0,PASS
+Units Sold,all / R1 / S3 / C4,1628.0,1628.0,PASS
+Units Sold,all / R1 / S4,6919.0,6919.0,PASS
+Units Sold,all / R1 / S4 / C1,1702.0,1702.0,PASS
+Units Sold,all / R1 / S4 / C2,1780.0,1780.0,PASS
+Units Sold,all / R1 / S4 / C3,1701.0,1701.0,PASS
+Units Sold,all / R1 / S4 / C4,1736.0,1736.0,PASS
+Units Sold,all / R2,27799.0,27799.0,PASS
+Units Sold,all / R2 / S5,6943.0,6943.0,PASS
+Units Sold,all / R2 / S5 / C1,1738.0,1738.0,PASS
+Units Sold,all / R2 / S5 / C2,1721.0,1721.0,PASS
+Units Sold,all / R2 / S5 / C3,1769.0,1769.0,PASS
+Units Sold,all / R2 / S5 / C4,1715.0,1715.0,PASS
+Units Sold,all / R2 / S6,7036.0,7036.0,PASS
+Units Sold,all / R2 / S6 / C1,1805.0,1805.0,PASS
+Units Sold,all / R2 / S6 / C2,1707.0,1707.0,PASS
+Units Sold,all / R2 / S6 / C3,1731.0,1731.0,PASS
+Units Sold,all / R2 / S6 / C4,1793.0,1793.0,PASS
+Units Sold,all / R2 / S7,6910.0,6910.0,PASS
+Units Sold,all / R2 / S7 / C1,1771.0,1771.0,PASS
+Units Sold,all / R2 / S7 / C2,1805.0,1805.0,PASS
+Units Sold,all / R2 / S7 / C3,1627.0,1627.0,PASS
+Units Sold,all / R2 / S7 / C4,1707.0,1707.0,PASS
+Units Sold,all / R2 / S8,6910.0,6910.0,PASS
+Units Sold,all / R2 / S8 / C1,1750.0,1750.0,PASS
+Units Sold,all / R2 / S8 / C2,1739.0,1739.0,PASS
+Units Sold,all / R2 / S8 / C3,1677.0,1677.0,PASS
+Units Sold,all / R2 / S8 / C4,1744.0,1744.0,PASS
+Units Sold,first_day,1731.0,1731.0,PASS
+Units Sold,first_day / R1,850.0,850.0,PASS
+Units Sold,first_day / R1 / S1,217.0,217.0,PASS
+Units Sold,first_day / R1 / S1 / C1,45.0,45.0,PASS
+Units Sold,first_day / R1 / S1 / C2,58.0,58.0,PASS
+Units Sold,first_day / R1 / S1 / C3,54.0,54.0,PASS
+Units Sold,first_day / R1 / S1 / C4,60.0,60.0,PASS
+Units Sold,first_day / R1 / S2,174.0,174.0,PASS
+Units Sold,first_day / R1 / S2 / C1,44.0,44.0,PASS
+Units Sold,first_day / R1 / S2 / C2,41.0,41.0,PASS
+Units Sold,first_day / R1 / S2 / C3,54.0,54.0,PASS
+Units Sold,first_day / R1 / S2 / C4,35.0,35.0,PASS
+Units Sold,first_day / R1 / S3,235.0,235.0,PASS
+Units Sold,first_day / R1 / S3 / C1,61.0,61.0,PASS
+Units Sold,first_day / R1 / S3 / C2,47.0,47.0,PASS
+Units Sold,first_day / R1 / S3 / C3,64.0,64.0,PASS
+Units Sold,first_day / R1 / S3 / C4,63.0,63.0,PASS
+Units Sold,first_day / R1 / S4,224.0,224.0,PASS
+Units Sold,first_day / R1 / S4 / C1,59.0,59.0,PASS
+Units Sold,first_day / R1 / S4 / C2,66.0,66.0,PASS
+Units Sold,first_day / R1 / S4 / C3,32.0,32.0,PASS
+Units Sold,first_day / R1 / S4 / C4,67.0,67.0,PASS
+Units Sold,first_day / R2,881.0,881.0,PASS
+Units Sold,first_day / R2 / S5,216.0,216.0,PASS
+Units Sold,first_day / R2 / S5 / C1,45.0,45.0,PASS
+Units Sold,first_day / R2 / S5 / C2,50.0,50.0,PASS
+Units Sold,first_day / R2 / S5 / C3,58.0,58.0,PASS
+Units Sold,first_day / R2 / S5 / C4,63.0,63.0,PASS
+Units Sold,first_day / R2 / S6,224.0,224.0,PASS
+Units Sold,first_day / R2 / S6 / C1,37.0,37.0,PASS
+Units Sold,first_day / R2 / S6 / C2,71.0,71.0,PASS
+Units Sold,first_day / R2 / S6 / C3,54.0,54.0,PASS
+Units Sold,first_day / R2 / S6 / C4,62.0,62.0,PASS
+Units Sold,first_day / R2 / S7,205.0,205.0,PASS
+Units Sold,first_day / R2 / S7 / C1,48.0,48.0,PASS
+Units Sold,first_day / R2 / S7 / C2,52.0,52.0,PASS
+Units Sold,first_day / R2 / S7 / C3,62.0,62.0,PASS
+Units Sold,first_day / R2 / S7 / C4,43.0,43.0,PASS
+Units Sold,first_day / R2 / S8,236.0,236.0,PASS
+Units Sold,first_day / R2 / S8 / C1,64.0,64.0,PASS
+Units Sold,first_day / R2 / S8 / C2,60.0,60.0,PASS
+Units Sold,first_day / R2 / S8 / C3,44.0,44.0,PASS
+Units Sold,first_day / R2 / S8 / C4,68.0,68.0,PASS
+Units Sold,first_day / S1 / P1,4.0,4.0,PASS
+Units Sold,first_day / S1 / P2,0.0,0.0,PASS
+Units Sold,north,27724.0,27724.0,PASS
+Units Sold,north / R1,27724.0,27724.0,PASS
+Units Sold,north / R1 / S1,7001.0,7001.0,PASS
+Units Sold,north / R1 / S1 / C1,1672.0,1672.0,PASS
+Units Sold,north / R1 / S1 / C2,1768.0,1768.0,PASS
+Units Sold,north / R1 / S1 / C3,1792.0,1792.0,PASS
+Units Sold,north / R1 / S1 / C4,1769.0,1769.0,PASS
+Units Sold,north / R1 / S2,6895.0,6895.0,PASS
+Units Sold,north / R1 / S2 / C1,1679.0,1679.0,PASS
+Units Sold,north / R1 / S2 / C2,1714.0,1714.0,PASS
+Units Sold,north / R1 / S2 / C3,1733.0,1733.0,PASS
+Units Sold,north / R1 / S2 / C4,1769.0,1769.0,PASS
+Units Sold,north / R1 / S3,6909.0,6909.0,PASS
+Units Sold,north / R1 / S3 / C1,1767.0,1767.0,PASS
+Units Sold,north / R1 / S3 / C2,1750.0,1750.0,PASS
+Units Sold,north / R1 / S3 / C3,1764.0,1764.0,PASS
+Units Sold,north / R1 / S3 / C4,1628.0,1628.0,PASS
+Units Sold,north / R1 / S4,6919.0,6919.0,PASS
+Units Sold,north / R1 / S4 / C1,1702.0,1702.0,PASS
+Units Sold,north / R1 / S4 / C2,1780.0,1780.0,PASS
+Units Sold,north / R1 / S4 / C3,1701.0,1701.0,PASS
+Units Sold,north / R1 / S4 / C4,1736.0,1736.0,PASS
+Units Sold,partial,5019.0,5019.0,PASS
+Units Sold,partial / R1,2490.0,2490.0,PASS
+Units Sold,partial / R1 / S2,2490.0,2490.0,PASS
+Units Sold,partial / R1 / S2 / C1,589.0,589.0,PASS
+Units Sold,partial / R1 / S2 / C2,618.0,618.0,PASS
+Units Sold,partial / R1 / S2 / C3,621.0,621.0,PASS
+Units Sold,partial / R1 / S2 / C4,662.0,662.0,PASS
+Units Sold,partial / R2,2529.0,2529.0,PASS
+Units Sold,partial / R2 / S6,2529.0,2529.0,PASS
+Units Sold,partial / R2 / S6 / C1,660.0,660.0,PASS
+Units Sold,partial / R2 / S6 / C2,622.0,622.0,PASS
+Units Sold,partial / R2 / S6 / C3,618.0,618.0,PASS
+Units Sold,partial / R2 / S6 / C4,629.0,629.0,PASS
+Units Sold,two_categories,27678.0,27678.0,PASS
+Units Sold,two_categories / R1,13810.0,13810.0,PASS
+Units Sold,two_categories / R1 / S1,3464.0,3464.0,PASS
+Units Sold,two_categories / R1 / S1 / C1,1672.0,1672.0,PASS
+Units Sold,two_categories / R1 / S1 / C3,1792.0,1792.0,PASS
+Units Sold,two_categories / R1 / S2,3412.0,3412.0,PASS
+Units Sold,two_categories / R1 / S2 / C1,1679.0,1679.0,PASS
+Units Sold,two_categories / R1 / S2 / C3,1733.0,1733.0,PASS
+Units Sold,two_categories / R1 / S3,3531.0,3531.0,PASS
+Units Sold,two_categories / R1 / S3 / C1,1767.0,1767.0,PASS
+Units Sold,two_categories / R1 / S3 / C3,1764.0,1764.0,PASS
+Units Sold,two_categories / R1 / S4,3403.0,3403.0,PASS
+Units Sold,two_categories / R1 / S4 / C1,1702.0,1702.0,PASS
+Units Sold,two_categories / R1 / S4 / C3,1701.0,1701.0,PASS
+Units Sold,two_categories / R2,13868.0,13868.0,PASS
+Units Sold,two_categories / R2 / S5,3507.0,3507.0,PASS
+Units Sold,two_categories / R2 / S5 / C1,1738.0,1738.0,PASS
+Units Sold,two_categories / R2 / S5 / C3,1769.0,1769.0,PASS
+Units Sold,two_categories / R2 / S6,3536.0,3536.0,PASS
+Units Sold,two_categories / R2 / S6 / C1,1805.0,1805.0,PASS
+Units Sold,two_categories / R2 / S6 / C3,1731.0,1731.0,PASS
+Units Sold,two_categories / R2 / S7,3398.0,3398.0,PASS
+Units Sold,two_categories / R2 / S7 / C1,1771.0,1771.0,PASS
+Units Sold,two_categories / R2 / S7 / C3,1627.0,1627.0,PASS
+Units Sold,two_categories / R2 / S8,3427.0,3427.0,PASS
+Units Sold,two_categories / R2 / S8 / C1,1750.0,1750.0,PASS
+Units Sold,two_categories / R2 / S8 / C3,1677.0,1677.0,PASS

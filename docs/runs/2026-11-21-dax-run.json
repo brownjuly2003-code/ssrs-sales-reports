@@ -1,0 +1,38 @@
+{
+  "excel_version": "16.0",
+  "rows_loaded": {
+    "Calendar": 31,
+    "Product": 64,
+    "Sales": 13874,
+    "Stock": 15872,
+    "Store": 8
+  },
+  "relationships": 6,
+  "measures": 4,
+  "control_rows": 600,
+  "passed": 600,
+  "failed": [],
+  "max_abs_difference": 0.0,
+  "negative_control_corrupted": [
+    [
+      "Revenue",
+      "all"
+    ],
+    [
+      "Closing Stock",
+      "partial / R1"
+    ]
+  ],
+  "negative_control_failed": [
+    [
+      "Closing Stock",
+      "partial / R1"
+    ],
+    [
+      "Revenue",
+      "all"
+    ]
+  ],
+  "define_sha256": "c6cd0330453e1b89475d9df4531d3f97d10bd0d41b48397c4e1c997d7634cfc7",
+  "query_sha256": "a112660e64056b7323a0fec3f984a601e9dfba977727c153d97089fc52379f7f"
+}

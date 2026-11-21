@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssrs-sales-reports"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["pandas==2.3.2", "sqlglot==30.4.3", "requests==2.34.2"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.15.22",
+    "duckdb==1.5.5",
+    "openpyxl==3.1.5",
+    "pypdf==6.16.1",
+    "aiosmtpd==1.4.6",
+    "PyYAML==6.0.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-m 'not slow'"
+markers = ["slow: requires a SQL Server instance (the Compose service by default)"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100

@@ -1,0 +1,15 @@
+model Model
+	culture: ru-RU
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: ru-RU
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+	annotation PBI_QueryOrder = ["DataFolder","Calendar","Store","Product","Sales","Stock"]
+
+ref table Calendar
+ref table Store
+ref table Product
+ref table Sales
+ref table Stock

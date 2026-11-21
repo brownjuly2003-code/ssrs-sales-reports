@@ -1,0 +1,5 @@
+/// Folder with the CSV files (end with a backslash). Change it after cloning.
+expression DataFolder = "C:/ssrs-sales-reports/data/" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 80ad927d-e5f7-5779-8967-5c39de190f02
+
+	annotation PBI_ResultType = Text
