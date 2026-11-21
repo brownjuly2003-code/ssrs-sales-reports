@@ -125,6 +125,10 @@ def test_setup_installs_engine_agent_and_reporting_services(job):
     for name in ("SQL_ISO", "SSRS"):
         assert re.fullmatch(r"[0-9A-F]{64}", job["env"][f"{name}_SHA256"])
         assert job["env"][f"{name}_URL"].startswith("https://download.microsoft.com/")
+    assert re.fullmatch(r"[0-9A-F]{64}", job["env"]["SSRS_SHA256_ALT"])
+    assert job["env"]["SSRS_SHA256_ALT"] != job["env"]["SSRS_SHA256"]
+    assert "-notin @($env:SSRS_SHA256, $env:SSRS_SHA256_ALT)" in text
+    assert "-notlike 'CN=Microsoft Corporation,*'" in text
     assert "Latin1_General_100_CI_AS_SC_UTF8" in text
 
 

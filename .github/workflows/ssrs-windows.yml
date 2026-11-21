@@ -38,8 +38,12 @@ jobs:
       # behind it was replaced on 2026-11-19 (Last-Modified); the SHA-256 is of the file downloaded
       # on 2026-11-21: 137187696 bytes, version 16.0.9819.33617, Authenticode signature of
       # Microsoft Corporation valid. The Chocolatey checksum (e120389f…) is of an older build.
+      # The same URL served another build to the GitHub runner on 2026-11-21 (run 44911770474):
+      # 137688208 bytes, version 16.0.9813.1253, signature of Microsoft Corporation valid. Mirrors of
+      # download.microsoft.com differ, so both known files are accepted, and nothing else.
       SSRS_URL: https://download.microsoft.com/download/8/3/2/832616ff-af64-42b5-a0b1-5eb07f71dec9/SQLServerReportingServices.exe
       SSRS_SHA256: FA1CBA25C8AEF0A1EE2AB76C809CC5599338740004483C46616C1633BFAD5961
+      SSRS_SHA256_ALT: 8CE31ED8296F6E44A842F71AB3303D2251AAD641516A344CE0A474CB75BC2466
       SETUP_LOG: 'C:\Program Files\Microsoft SQL Server\160\Setup Bootstrap\Log'
       RS_LOG: 'C:\Program Files\Microsoft SQL Server Reporting Services\SSRS\LogFiles'
     steps:
@@ -180,8 +184,9 @@ jobs:
           $line = "SSRS media: SQLServerReportingServices.exe $version, $((Get-Item -LiteralPath $exe).Length) bytes, SHA-256 $hash, signature $($signature.Status) ($($signature.SignerCertificate.Subject))"
           Add-Content -Encoding UTF8 -Path "$env:EVIDENCE/summary.txt" -Value $line
           Write-Output $line
-          if ($hash -ne $env:SSRS_SHA256) { throw "SHA-256 differs from the pinned $env:SSRS_SHA256 (Microsoft may have replaced the file again)" }
+          if ($hash -notin @($env:SSRS_SHA256, $env:SSRS_SHA256_ALT)) { throw "SHA-256 differs from both pinned values $env:SSRS_SHA256 and $env:SSRS_SHA256_ALT (Microsoft may have replaced the file again)" }
           if ($signature.Status -ne 'Valid') { throw 'The installer signature is not valid.' }
+          if ($signature.SignerCertificate.Subject -notlike 'CN=Microsoft Corporation,*') { throw "Unexpected signer: $($signature.SignerCertificate.Subject)" }
 
       - name: 3b. Install SQL Server 2022 Reporting Services, Developer edition
         timeout-minutes: 30
